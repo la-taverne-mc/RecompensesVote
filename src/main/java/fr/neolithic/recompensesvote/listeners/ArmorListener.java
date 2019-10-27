@@ -1,4 +1,4 @@
-package fr.poc4.recompensesvote.listeners;
+package fr.neolithic.recompensesvote.listeners;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.google.common.collect.Lists;
 
-import fr.poc4.recompensesvote.Main;
-import fr.poc4.recompensesvote.tasks.BootsTask;
+import fr.neolithic.recompensesvote.Main;
+import fr.neolithic.recompensesvote.tasks.BootsTask;
 
 public class ArmorListener implements Listener {
 	private List<Material> blockedMaterials;

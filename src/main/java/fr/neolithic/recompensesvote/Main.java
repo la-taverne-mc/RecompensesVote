@@ -1,4 +1,4 @@
-package fr.poc4.recompensesvote;
+package fr.neolithic.recompensesvote;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,8 +26,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import fr.poc4.recompensesvote.listeners.ArmorListener;
-import fr.poc4.recompensesvote.listeners.Listeners;
+import fr.neolithic.recompensesvote.listeners.ArmorListener;
+import fr.neolithic.recompensesvote.listeners.Listeners;
 import net.md_5.bungee.api.ChatColor;
 
 public class Main extends JavaPlugin {

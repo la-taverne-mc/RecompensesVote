@@ -1,24 +1,27 @@
-package fr.poc4.recompensesvote.tasks;
+package fr.neolithic.recompensesvote.tasks;
 
+import java.util.List;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.poc4.recompensesvote.Main;
+import fr.neolithic.recompensesvote.Main;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class FlyEffect extends BukkitRunnable {
+public class PhantomEffect extends BukkitRunnable {
 	private final Player player;
 	private int counter;
 	
-	public FlyEffect(Player player, int counter) {
+	public PhantomEffect(Player player, int counter) {
 		this.player = player;
 		this.counter = counter;
 		
-		this.player.setAllowFlight(true);
 		if (!Main.effect.containsKey(this.player.getName())) {
-			Main.effect.put(player.getName(), "fly");
-			Main.effectTime.put(player.getName(), counter);
+			Main.effect.put(this.player.getName(), "phantom");
+			Main.effectTime.put(this.player.getName(), this.counter);
 		}
 	}
 	
@@ -26,6 +29,17 @@ public class FlyEffect extends BukkitRunnable {
 	public void run() {
 		if (player.isOnline() && !player.isDead() && counter > 0) {
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§eIl te reste §a" + convertTime(counter)));
+			
+			if (counter  % 5 == 0) {
+				List<Entity> entities = player.getNearbyEntities(25, 50, 25);
+				
+				for (Entity entity : entities) {
+					if (entity.getType().equals(EntityType.PHANTOM)) {
+						entity.remove();
+					}
+				}
+			}
+			
 			counter--;
 		}
 		else {
@@ -37,8 +51,6 @@ public class FlyEffect extends BukkitRunnable {
 				Main.effectTime.replace(player.getName(), counter);
 			}
 			
-			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§eBon retour sur terre !"));
-			this.player.setAllowFlight(false);
 			this.cancel();
 		}
 	}

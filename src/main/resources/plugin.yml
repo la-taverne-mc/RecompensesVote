@@ -1,8 +1,9 @@
+api: none
 api-version: "1.14"
 name: RecompensesVote
 version: "1.0"
 author: PoC4
-main: fr.poc4.recompensesvote.Main
+main: fr.neolithic.recompensesvote.Main
 commands:
   test:
     description: test

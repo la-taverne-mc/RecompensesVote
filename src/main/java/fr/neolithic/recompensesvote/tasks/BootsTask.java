@@ -1,4 +1,4 @@
-package fr.poc4.recompensesvote.tasks;
+package fr.neolithic.recompensesvote.tasks;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.poc4.recompensesvote.Main;
+import fr.neolithic.recompensesvote.Main;
 
 public class BootsTask extends BukkitRunnable {
 	private double totalDistance;

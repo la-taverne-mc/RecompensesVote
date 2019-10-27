@@ -1,4 +1,4 @@
-package fr.poc4.recompensesvote;
+package fr.neolithic.recompensesvote;
 
 import java.util.List;
 import java.util.Map;

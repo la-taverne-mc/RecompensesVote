@@ -1,4 +1,4 @@
-package fr.poc4.recompensesvote.listeners;
+package fr.neolithic.recompensesvote.listeners;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -31,10 +31,10 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.poc4.recompensesvote.Main;
-import fr.poc4.recompensesvote.tasks.CreeperEffect;
-import fr.poc4.recompensesvote.tasks.FlyEffect;
-import fr.poc4.recompensesvote.tasks.PhantomEffect;
+import fr.neolithic.recompensesvote.Main;
+import fr.neolithic.recompensesvote.tasks.CreeperEffect;
+import fr.neolithic.recompensesvote.tasks.FlyEffect;
+import fr.neolithic.recompensesvote.tasks.PhantomEffect;
 
 public class Listeners implements Listener {
 	private final JavaPlugin plugin;

@@ -1,26 +1,26 @@
-package fr.poc4.recompensesvote.tasks;
-
-import java.util.List;
+package fr.neolithic.recompensesvote.tasks;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.poc4.recompensesvote.Main;
+import fr.neolithic.recompensesvote.Main;
+import io.lumine.xikage.mythicmobs.MythicMobs;
+import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class PhantomEffect extends BukkitRunnable {
-	private final Player player;
+public class CreeperEffect extends BukkitRunnable {
+	private Player player;
 	private int counter;
 	
-	public PhantomEffect(Player player, int counter) {
+	public CreeperEffect(Player player, int counter) {
 		this.player = player;
 		this.counter = counter;
 		
 		if (!Main.effect.containsKey(this.player.getName())) {
-			Main.effect.put(this.player.getName(), "phantom");
+			Main.effect.put(this.player.getName(), "creeper");
 			Main.effectTime.put(this.player.getName(), this.counter);
 		}
 	}
@@ -30,13 +30,11 @@ public class PhantomEffect extends BukkitRunnable {
 		if (player.isOnline() && !player.isDead() && counter > 0) {
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§eIl te reste §a" + convertTime(counter)));
 			
-			if (counter  % 5 == 0) {
-				List<Entity> entities = player.getNearbyEntities(25, 50, 25);
-				
-				for (Entity entity : entities) {
-					if (entity.getType().equals(EntityType.PHANTOM)) {
-						entity.remove();
-					}
+			for (Entity entity : player.getNearbyEntities(16.0, 16.0, 16.0)) {
+				if (entity.getType().equals(EntityType.CREEPER) && entity.getName() == null && !entity.getScoreboardTags().contains("scared")) {
+					ActiveMob mob = MythicMobs.inst().getMobManager().spawnMob("ScaredCreeper", entity.getLocation());
+					mob.getEntity().getBukkitEntity().teleport(entity);
+					entity.remove();
 				}
 			}
 			
@@ -44,8 +42,8 @@ public class PhantomEffect extends BukkitRunnable {
 		}
 		else {
 			if (counter <= 0 || (player.isDead() && player.isOnline())) {
-				Main.effectTime.remove(player.getName());
 				Main.effect.remove(player.getName());
+				Main.effectTime.remove(player.getName());
 			}
 			else {
 				Main.effectTime.replace(player.getName(), counter);
