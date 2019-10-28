@@ -1,0 +1,14 @@
+api: none
+api-version: "1.14"
+name: RecompensesVote
+version: "1.0"
+author: PoC4
+main: fr.neolithic.recompensesvote.Main
+commands:
+  test:
+    description: test
+  selectvotereward:
+    description: select vote reward
+    permission: neolithic.selectvotereward
+  item:
+    description: give item
