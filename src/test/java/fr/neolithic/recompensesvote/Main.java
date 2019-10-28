@@ -28,7 +28,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import fr.neolithic.recompensesvote.listeners.ArmorListener;
 import fr.neolithic.recompensesvote.listeners.Listeners;
-import net.md_5.bungee.api.ChatColor;
 
 public class Main extends JavaPlugin {
 	public static HashMap<String, ItemStack> items = new HashMap<String, ItemStack>();
@@ -44,11 +43,18 @@ public class Main extends JavaPlugin {
 		
 		getServer().getPluginManager().registerEvents(new ArmorListener(this), this);
 		getServer().getPluginManager().registerEvents(new Listeners(this), this);
-		getCommand("test").setExecutor(new Commands());
-		getCommand("selectvotereward").setExecutor(new Commands());
-		getCommand("item").setExecutor(new Commands());
+
+		Commands commandExecutor = new Commands();
+		getCommand("test").setExecutor(commandExecutor);
+		getCommand("selectvotereward").setExecutor(commandExecutor);
+		getCommand("item").setExecutor(commandExecutor);
 		
-		getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "Reload Complete !");
+		System.out.println("RecompensesVote has been successfully enabled");
+	}
+
+	@Override
+	public void onDisable() {
+		System.out.println("RecompensesVote has been successfully disabled");
 	}
 	
 	@SuppressWarnings("deprecation")
