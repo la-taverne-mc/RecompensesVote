@@ -76,9 +76,9 @@ public class Commands implements TabExecutor {
 			if (args.length == 1) {
 				List<String> list = Lists.newArrayList();
 				
-				for (Map.Entry<String, ItemStack> item : Main.items.entrySet()) {
-					if (item.getKey().toLowerCase().startsWith(args[0].toLowerCase())) {
-						list.add(item.getKey());
+				for (String item : Main.items.keySet()) {
+					if (item.toLowerCase().startsWith(args[0].toLowerCase())) {
+						list.add(item);
 					}
 				}
 				
