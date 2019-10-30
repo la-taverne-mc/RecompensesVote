@@ -32,7 +32,7 @@ public class Commands implements TabExecutor {
 			Float lastPercent = 0.f;
 			Float total = 0.f;
 			
-			if (args.length != 1 && sender instanceof Player) {
+			if (args.length < 1 && sender instanceof Player) {
 				receiver = (Player) sender;
 			}
 			else if (Bukkit.getPlayerExact(args[0]) != null) {
@@ -42,8 +42,8 @@ public class Commands implements TabExecutor {
 				sender.sendMessage("§cInvalid player name");
 			}
 			
-			for (Map.Entry<ItemStack, Float> reward : Main.votingRewards.entrySet()) {
-				total += reward.getValue();
+			for (Float rewardChance : Main.votingRewards.values()) {
+				total += rewardChance;
 			}
 			
 			for (Map.Entry<ItemStack, Float> reward : Main.votingRewards.entrySet()) {

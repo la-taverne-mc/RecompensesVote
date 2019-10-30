@@ -116,7 +116,7 @@ public class Main extends JavaPlugin {
 		antiPhantom_meta.setColor(Color.fromRGB(0, 43, 112));
 		antiPhantom_meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
 		antiPhantom_meta.setDisplayName("§bPotion Anti Phantom");
-		antiPhantom_meta.setLore(Arrays.asList("§eBoire cette potion vous", "§epermet d'§liminer les", "§ephantom autour de vous", "§ependant §620min"));
+		antiPhantom_meta.setLore(Arrays.asList("§eBoire cette potion vous", "§epermet d'éliminer les", "§ephantom autour de vous", "§ependant §620min"));
 		antiCreeper_meta.setColor(Color.fromRGB(0, 135, 6));
 		antiCreeper_meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
 		antiCreeper_meta.setDisplayName("§bSang de Creeper");
@@ -131,7 +131,7 @@ public class Main extends JavaPlugin {
 		swimingPotion_meta.addCustomEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 12000, 1), true);
 		swimingPotion_meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
 		swimingPotion_meta.setDisplayName("§bPotion d'Homme Poisson");
-		swimingPotion_meta.setLore(Arrays.asList("§eBoire cette potion vous", "§epermettra de devenir", "§eaussi § l'aise sous l'eau", "§eque n'importe quel §tre", "§esous-marin"));
+		swimingPotion_meta.setLore(Arrays.asList("§eBoire cette potion vous", "§epermettra de devenir", "§eaussi à l'aise sous l'eau", "§eque n'importe quel être", "§esous-marin"));
 		inuitAxe_meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("1de4ca9e-fe66-4222-966d-73f226e8fecd"), "generic.attackDamage", 4, Operation.ADD_NUMBER, EquipmentSlot.HAND));
 		inuitAxe_meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier(UUID.fromString("c26bf64f-1a1a-4425-bc4e-77dc56845f8b"), "generic.attackSpeed", -0.65, Operation.MULTIPLY_SCALAR_1, EquipmentSlot.HAND));
 		inuitAxe_meta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("10cea9ed-2627-4a6e-b904-52228bbff57b"), "generic.attackDamage", 4, Operation.ADD_NUMBER, EquipmentSlot.OFF_HAND));
@@ -151,20 +151,20 @@ public class Main extends JavaPlugin {
 		baseballBat_meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		baseballBat_meta.setCustomModelData(1);
 		baseballBat_meta.setDisplayName("§bBatte de Baseball");
-		baseballBat_meta.setLore(Arrays.asList("§7Recul XV", "§c /!\\ Attention /!\\", "§c  Cet item est §", "§c  usage unique"));
+		baseballBat_meta.setLore(Arrays.asList("§7Recul XV", "§c /!\\ Attention /!\\", "§c  Cet item est à", "§c  usage unique"));
 		goblinPickaxe_meta.setDisplayName("§bPioche de Gobelin");
-		goblinPickaxe_meta.setLore(Arrays.asList("§eCette pioche vous conf§re", "§eune pr§cision accrue et", "§evous permet d'extraire", "§edes min§raux pr§cieux", "§edes roches"));
+		goblinPickaxe_meta.setLore(Arrays.asList("§eCette pioche vous confère", "§eune précision accrue et", "§evous permet d'extraire", "§edes minéraux précieux", "§edes roches"));
 		giantBoots_meta.addAttributeModifier(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.fromString("ec3474c3-b57c-4fbf-ba1f-a7c5ac9292c5"), "generic.armor", 1, Operation.ADD_NUMBER, EquipmentSlot.FEET));
 		giantBoots_meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, new AttributeModifier(UUID.fromString("dcc66b53-a22c-48cc-afbd-274a02967392"), "generic.movementSpeed", 0.75, Operation.MULTIPLY_SCALAR_1, EquipmentSlot.FEET));
 		giantBoots_meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		giantBoots_meta.setDisplayName("§bBottes de G§ant");
-		giantBoots_meta.setLore(Arrays.asList("§eCes bottes semblent §mettre", "§eune certaine forme de magie", "§eet vous permettraient", "§ed'aller plus vite", "", "§cAttention la durabilit§", "§cbaisse avec la distance", "§cparcourue"));
+		giantBoots_meta.setLore(Arrays.asList("§eCes bottes semblent émettre", "§eune certaine forme de magie", "§eet vous permettraient", "§ed'aller plus vite", "", "§cAttention la durabilité", "§cbaisse avec la distance", "§cparcourue"));
 		cookedHorse_meta.setDisplayName("§fSteak de Cheval");
 		cookedBear_meta.setDisplayName("§fSteak d'Ours");
 		rawHorse_meta.setDisplayName("§fCheval Cru");
 		rawBear_meta.setDisplayName("§fOurs Cru");
 		legendaryDirt_meta.setDisplayName("§cTerre du Cocu");
-		legendaryDirt_meta.setLore(Arrays.asList("§eD'apr§s les dires c'est", "§el'objet le plus rare de", "§etout le jeu"));
+		legendaryDirt_meta.setLore(Arrays.asList("§eD'après les dires c'est", "§el'objet le plus rare de", "§etout le jeu"));
 		
 		fly1min.setItemMeta(fly1min_meta);
 		fly5min.setItemMeta(fly5min_meta);
