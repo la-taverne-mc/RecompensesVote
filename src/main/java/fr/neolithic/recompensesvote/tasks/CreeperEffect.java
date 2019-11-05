@@ -31,7 +31,7 @@ public class CreeperEffect extends BukkitRunnable {
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§eIl te reste §a" + convertTime(counter)));
 			
 			for (Entity entity : player.getNearbyEntities(16.0, 16.0, 16.0)) {
-				if (entity.getType().equals(EntityType.CREEPER) && entity.getName() == null && !entity.getScoreboardTags().contains("scared")) {
+				if (entity.getType().equals(EntityType.CREEPER) && entity.getCustomName() == null && !entity.getScoreboardTags().contains("scared")) {
 					ActiveMob mob = MythicMobs.inst().getMobManager().spawnMob("ScaredCreeper", entity.getLocation());
 					mob.getEntity().getBukkitEntity().teleport(entity);
 					entity.remove();
