@@ -4,11 +4,17 @@ name: RecompensesVote
 version: "1.0"
 author: PoC4
 main: fr.neolithic.recompensesvote.Main
+depend: [MythicMobs]
 commands:
   test:
     description: test
+    permission: recompensesvote.test
+    default: op
   selectvotereward:
     description: select vote reward
-    permission: neolithic.selectvotereward
+    permission: recompensesvote.selectvotereward
+    default: op
   item:
     description: give item
+    permission: recompensesvote.item
+    default: op

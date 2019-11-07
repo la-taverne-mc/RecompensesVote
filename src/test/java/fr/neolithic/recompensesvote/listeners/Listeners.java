@@ -1,6 +1,7 @@
 package fr.neolithic.recompensesvote.listeners;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -15,6 +16,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -24,6 +26,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -35,12 +38,37 @@ import fr.neolithic.recompensesvote.Main;
 import fr.neolithic.recompensesvote.tasks.CreeperEffect;
 import fr.neolithic.recompensesvote.tasks.FlyEffect;
 import fr.neolithic.recompensesvote.tasks.PhantomEffect;
+import fr.neolithic.recompensesvote.tasks.TomahawkTask;
 
 public class Listeners implements Listener {
+	private List<Material> blockedMaterials;
 	private final JavaPlugin plugin;
 	
-	public Listeners(JavaPlugin plugin) {
+	public Listeners(JavaPlugin plugin, List<Material> blockedMaterials) {
 		this.plugin = plugin;
+		this.blockedMaterials = blockedMaterials;
+	}
+
+	@EventHandler
+	public void onClick(PlayerInteractEvent event) {
+		if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			if (event.getClickedBlock() != null) {
+				if (blockedMaterials.contains(event.getClickedBlock().getType()) || (event.getClickedBlock().getType().equals(Material.COMPOSTER) && ((org.bukkit.block.data.Levelled) event.getClickedBlock().getBlockData()).getLevel() == 8) || (event.getClickedBlock().getType().equals(Material.LECTERN) && ((org.bukkit.block.data.type.Lectern) event.getClickedBlock().getBlockData()).hasBook())) {
+					return;
+				}
+			}
+
+			ItemStack item = event.getItem().clone();
+			if (item.getItemMeta() instanceof Damageable) {
+				Damageable item_meta = (Damageable) item.getItemMeta();
+				item_meta.setDamage(0);
+				item.setItemMeta((ItemMeta) item_meta);
+
+				if (item.equals(Main.items.get("tomahawk"))) {
+					new TomahawkTask(event.getPlayer().getEyeLocation(), event.getPlayer().getLocation().getDirection().multiply(1.4)).runTaskTimer(plugin, 0, 1);
+				}
+			}
+		}
 	}
 	
 	@EventHandler

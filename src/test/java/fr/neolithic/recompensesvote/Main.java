@@ -2,7 +2,10 @@ package fr.neolithic.recompensesvote;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
+
+import com.google.common.collect.Lists;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -35,14 +38,17 @@ public class Main extends JavaPlugin {
 	
 	public static HashMap<String, Integer> effectTime = new HashMap<String, Integer>();
 	public static HashMap<String, String> effect = new HashMap<String, String>();
+
+	private List<Material> blockedMaterials;
 	
 	@Override
 	public void onEnable() {
 		registerItems();
 		registerVotingRewards();
+		registerBlockedMaterials();
 		
-		getServer().getPluginManager().registerEvents(new ArmorListener(this), this);
-		getServer().getPluginManager().registerEvents(new Listeners(this), this);
+		getServer().getPluginManager().registerEvents(new ArmorListener(this, blockedMaterials), this);
+		getServer().getPluginManager().registerEvents(new Listeners(this, blockedMaterials), this);
 
 		Commands commandExecutor = new Commands();
 		getCommand("test").setExecutor(commandExecutor);
@@ -77,6 +83,7 @@ public class Main extends JavaPlugin {
 		ItemStack rawHorse = new ItemStack(Material.BEEF);
 		ItemStack rawBear = new ItemStack(Material.BEEF);
 		ItemStack legendaryDirt = new ItemStack(Material.DIRT);
+		ItemStack tomahawk = new ItemStack(Material.IRON_AXE);
 		
 		PotionMeta fly1min_meta = (PotionMeta) fly1min.getItemMeta();
 		PotionMeta fly5min_meta = (PotionMeta) fly5min.getItemMeta();
@@ -96,6 +103,7 @@ public class Main extends JavaPlugin {
 		ItemMeta rawHorse_meta = rawHorse.getItemMeta();
 		ItemMeta rawBear_meta = rawBear.getItemMeta();
 		ItemMeta legendaryDirt_meta = legendaryDirt.getItemMeta();
+		ItemMeta tomahawk_meta = tomahawk.getItemMeta();
 
 		fly1min_meta.setColor(Color.fromRGB(255, 243, 122));
 		fly1min_meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
@@ -165,6 +173,7 @@ public class Main extends JavaPlugin {
 		rawBear_meta.setDisplayName("§fOurs Cru");
 		legendaryDirt_meta.setDisplayName("§cTerre du Cocu");
 		legendaryDirt_meta.setLore(Arrays.asList("§eD'après les dires c'est", "§el'objet le plus rare de", "§etout le jeu"));
+		tomahawk_meta.setCustomModelData(2);
 		
 		fly1min.setItemMeta(fly1min_meta);
 		fly5min.setItemMeta(fly5min_meta);
@@ -184,25 +193,28 @@ public class Main extends JavaPlugin {
 		rawHorse.setItemMeta(rawHorse_meta);
 		rawBear.setItemMeta(rawBear_meta);
 		legendaryDirt.setItemMeta(legendaryDirt_meta);
+		tomahawk.setItemMeta(tomahawk_meta);
 		
 		items.put("fly1min", fly1min); // x
 		items.put("fly5min", fly5min); // x
 		items.put("fly10min", fly10min); // x
 		items.put("fly20min", fly20min); // x
 		items.put("antiPhantom", antiPhantom); // x
-		items.put("antiCreeper", antiCreeper);
+		items.put("antiCreeper", antiCreeper); // x
 		items.put("miningPotion", miningPotion); // x
 		items.put("swimingPotion", swimingPotion); // x
 		items.put("inuitAxe", inuitAxe); // x
 		items.put("indianAxe", indianAxe); // x
 		items.put("baseballBat", baseballBat); // x
 		items.put("goblinPickaxe", goblinPickaxe); // x
-		items.put("giantBoots", giantBoots);
+		items.put("giantBoots", giantBoots); // x
 		items.put("cookedHorse", cookedHorse); // x
 		items.put("cookedBear", cookedBear); // x
 		items.put("rawHorse", rawHorse); // x
 		items.put("rawBear", rawBear); // x
 		items.put("legendaryDirt", legendaryDirt); // x
+		items.put("tomahawk", tomahawk);
+
 		
 		getServer().addRecipe(new FurnaceRecipe(new NamespacedKey(this, "cooked_horse"), cookedHorse, new RecipeChoice.ExactChoice(rawHorse), (float) 0.35, 200));
 		getServer().addRecipe(new FurnaceRecipe(new NamespacedKey(this, "cooked_bear"), cookedBear, new RecipeChoice.ExactChoice(rawBear), (float) 0.35, 200));
@@ -252,5 +264,107 @@ public class Main extends JavaPlugin {
 		fortuneBook_meta.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 3, false);
 		fortuneBook.setItemMeta((ItemMeta) fortuneBook_meta);
 		votingRewards.put(fortuneBook, 0.07f);
+	}
+
+	private void registerBlockedMaterials() {
+		blockedMaterials = Lists.newArrayList();
+
+		blockedMaterials.add(Material.CHEST);
+		blockedMaterials.add(Material.CRAFTING_TABLE);
+		blockedMaterials.add(Material.FURNACE);
+		blockedMaterials.add(Material.DISPENSER);
+		blockedMaterials.add(Material.ENCHANTING_TABLE);
+		blockedMaterials.add(Material.ENDER_CHEST);
+		blockedMaterials.add(Material.SHULKER_BOX);
+		blockedMaterials.add(Material.BLACK_SHULKER_BOX);
+		blockedMaterials.add(Material.BLUE_SHULKER_BOX);
+		blockedMaterials.add(Material.BROWN_SHULKER_BOX);
+		blockedMaterials.add(Material.CYAN_SHULKER_BOX);
+		blockedMaterials.add(Material.GRAY_SHULKER_BOX);
+		blockedMaterials.add(Material.GREEN_SHULKER_BOX);
+		blockedMaterials.add(Material.LIGHT_BLUE_SHULKER_BOX);
+		blockedMaterials.add(Material.LIGHT_GRAY_SHULKER_BOX);
+		blockedMaterials.add(Material.LIME_SHULKER_BOX);
+		blockedMaterials.add(Material.MAGENTA_SHULKER_BOX);
+		blockedMaterials.add(Material.ORANGE_SHULKER_BOX);
+		blockedMaterials.add(Material.PINK_SHULKER_BOX);
+		blockedMaterials.add(Material.PURPLE_SHULKER_BOX);
+		blockedMaterials.add(Material.RED_SHULKER_BOX);
+		blockedMaterials.add(Material.WHITE_SHULKER_BOX);
+		blockedMaterials.add(Material.YELLOW_SHULKER_BOX);
+		blockedMaterials.add(Material.ACACIA_SIGN);
+		blockedMaterials.add(Material.ACACIA_WALL_SIGN);
+		blockedMaterials.add(Material.BIRCH_SIGN);
+		blockedMaterials.add(Material.BIRCH_WALL_SIGN);
+		blockedMaterials.add(Material.DARK_OAK_SIGN);
+		blockedMaterials.add(Material.DARK_OAK_WALL_SIGN);
+		blockedMaterials.add(Material.JUNGLE_SIGN);
+		blockedMaterials.add(Material.JUNGLE_WALL_SIGN);
+		blockedMaterials.add(Material.OAK_SIGN);
+		blockedMaterials.add(Material.OAK_WALL_SIGN);
+		blockedMaterials.add(Material.SPRUCE_SIGN);
+		blockedMaterials.add(Material.SPRUCE_WALL_SIGN);
+		blockedMaterials.add(Material.BLACK_BED);
+		blockedMaterials.add(Material.BLUE_BED);
+		blockedMaterials.add(Material.BROWN_BED);
+		blockedMaterials.add(Material.CYAN_BED);
+		blockedMaterials.add(Material.GRAY_BED);
+		blockedMaterials.add(Material.GREEN_BED);
+		blockedMaterials.add(Material.LIGHT_BLUE_BED);
+		blockedMaterials.add(Material.LIGHT_GRAY_BED);
+		blockedMaterials.add(Material.LIME_BED);
+		blockedMaterials.add(Material.MAGENTA_BED);
+		blockedMaterials.add(Material.ORANGE_BED);
+		blockedMaterials.add(Material.PINK_BED);
+		blockedMaterials.add(Material.PURPLE_BED);
+		blockedMaterials.add(Material.RED_BED);
+		blockedMaterials.add(Material.WHITE_BED);
+		blockedMaterials.add(Material.YELLOW_BED);
+		blockedMaterials.add(Material.LOOM);
+		blockedMaterials.add(Material.BARREL);
+		blockedMaterials.add(Material.SMOKER);
+		blockedMaterials.add(Material.BLAST_FURNACE);
+		blockedMaterials.add(Material.CARTOGRAPHY_TABLE);
+		blockedMaterials.add(Material.NOTE_BLOCK);
+		blockedMaterials.add(Material.GRINDSTONE);
+		blockedMaterials.add(Material.DROPPER);
+		blockedMaterials.add(Material.STONECUTTER);
+		blockedMaterials.add(Material.BELL);
+		blockedMaterials.add(Material.LEVER);
+		blockedMaterials.add(Material.ACACIA_BUTTON);
+		blockedMaterials.add(Material.BIRCH_BUTTON);
+		blockedMaterials.add(Material.DARK_OAK_BUTTON);
+		blockedMaterials.add(Material.JUNGLE_BUTTON);
+		blockedMaterials.add(Material.OAK_BUTTON);
+		blockedMaterials.add(Material.SPRUCE_BUTTON);
+		blockedMaterials.add(Material.STONE_BUTTON);
+		blockedMaterials.add(Material.ACACIA_TRAPDOOR);
+		blockedMaterials.add(Material.BIRCH_TRAPDOOR);
+		blockedMaterials.add(Material.DARK_OAK_TRAPDOOR);
+		blockedMaterials.add(Material.JUNGLE_TRAPDOOR);
+		blockedMaterials.add(Material.OAK_TRAPDOOR);
+		blockedMaterials.add(Material.SPRUCE_TRAPDOOR);
+		blockedMaterials.add(Material.ACACIA_FENCE_GATE);
+		blockedMaterials.add(Material.BIRCH_FENCE_GATE);
+		blockedMaterials.add(Material.DARK_OAK_FENCE_GATE);
+		blockedMaterials.add(Material.JUNGLE_FENCE_GATE);
+		blockedMaterials.add(Material.OAK_FENCE_GATE);
+		blockedMaterials.add(Material.SPRUCE_FENCE_GATE);
+		blockedMaterials.add(Material.DAYLIGHT_DETECTOR);
+		blockedMaterials.add(Material.REPEATER);
+		blockedMaterials.add(Material.COMPARATOR);
+		blockedMaterials.add(Material.ACACIA_DOOR);
+		blockedMaterials.add(Material.BIRCH_DOOR);
+		blockedMaterials.add(Material.DARK_OAK_DOOR);
+		blockedMaterials.add(Material.JUNGLE_DOOR);
+		blockedMaterials.add(Material.OAK_DOOR);
+		blockedMaterials.add(Material.SPRUCE_DOOR);
+		blockedMaterials.add(Material.BEACON);
+		blockedMaterials.add(Material.BREWING_STAND);
+		blockedMaterials.add(Material.ANVIL);
+		blockedMaterials.add(Material.CHIPPED_ANVIL);
+		blockedMaterials.add(Material.DAMAGED_ANVIL);
+		blockedMaterials.add(Material.CAKE);
+		blockedMaterials.add(Material.FLOWER_POT);
 	}
 }
