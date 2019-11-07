@@ -4,7 +4,7 @@ name: RecompensesVote
 version: "1.0"
 author: PoC4
 main: fr.neolithic.recompensesvote.Main
-depend: [MythicMobs]
+depend: [MythicMobs, ProtocolLib]
 commands:
   test:
     description: test

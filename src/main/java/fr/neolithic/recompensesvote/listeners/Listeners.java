@@ -43,10 +43,12 @@ import fr.neolithic.recompensesvote.tasks.TomahawkTask;
 public class Listeners implements Listener {
 	private List<Material> blockedMaterials;
 	private final JavaPlugin plugin;
+	private EntityHider entityHider;
 	
-	public Listeners(JavaPlugin plugin, List<Material> blockedMaterials) {
+	public Listeners(JavaPlugin plugin, List<Material> blockedMaterials, EntityHider entityHider) {
 		this.plugin = plugin;
 		this.blockedMaterials = blockedMaterials;
+		this.entityHider = entityHider;
 	}
 
 	@EventHandler
@@ -58,14 +60,27 @@ public class Listeners implements Listener {
 				}
 			}
 
-			ItemStack item = event.getItem().clone();
+			ItemStack item;
+			switch (event.getHand()) {
+				case HAND:
+					item = event.getPlayer().getInventory().getItemInMainHand().clone();
+					break;
+				
+				case OFF_HAND:
+					item = event.getPlayer().getInventory().getItemInOffHand().clone();
+					break;
+
+				default:
+					return;
+			}
+			
 			if (item.getItemMeta() instanceof Damageable) {
 				Damageable item_meta = (Damageable) item.getItemMeta();
 				item_meta.setDamage(0);
 				item.setItemMeta((ItemMeta) item_meta);
 
 				if (item.equals(Main.items.get("tomahawk"))) {
-					new TomahawkTask(event.getPlayer().getEyeLocation(), event.getPlayer().getLocation().getDirection().multiply(1.4)).runTaskTimer(plugin, 0, 1);
+					new TomahawkTask(entityHider, event.getPlayer().getEyeLocation(), event.getPlayer().getLocation().getDirection().multiply(1.4)).runTaskTimer(plugin, 0, 1);
 				}
 			}
 		}

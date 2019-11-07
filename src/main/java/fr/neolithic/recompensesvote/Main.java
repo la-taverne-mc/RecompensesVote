@@ -30,7 +30,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import fr.neolithic.recompensesvote.listeners.ArmorListener;
+import fr.neolithic.recompensesvote.listeners.EntityHider;
 import fr.neolithic.recompensesvote.listeners.Listeners;
+import fr.neolithic.recompensesvote.listeners.EntityHider.Policy;
 
 public class Main extends JavaPlugin {
 	public static HashMap<String, ItemStack> items = new HashMap<String, ItemStack>();
@@ -40,15 +42,18 @@ public class Main extends JavaPlugin {
 	public static HashMap<String, String> effect = new HashMap<String, String>();
 
 	private List<Material> blockedMaterials;
+	private EntityHider entityHider;
 	
 	@Override
 	public void onEnable() {
 		registerItems();
 		registerVotingRewards();
 		registerBlockedMaterials();
+
+		entityHider = new EntityHider(this, Policy.BLACKLIST);
 		
 		getServer().getPluginManager().registerEvents(new ArmorListener(this, blockedMaterials), this);
-		getServer().getPluginManager().registerEvents(new Listeners(this, blockedMaterials), this);
+		getServer().getPluginManager().registerEvents(new Listeners(this, blockedMaterials, entityHider), this);
 
 		Commands commandExecutor = new Commands();
 		getCommand("test").setExecutor(commandExecutor);
