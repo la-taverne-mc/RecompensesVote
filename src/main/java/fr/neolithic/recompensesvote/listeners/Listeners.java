@@ -26,9 +26,11 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -52,35 +54,52 @@ public class Listeners implements Listener {
 	}
 
 	@EventHandler
+	public void onArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
+		if (event.getRightClicked().getScoreboardTags().contains("tomahawk")) {
+			if (event.getSlot() == EquipmentSlot.HAND) {
+				event.getRightClicked().remove();
+			}
+			else {
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler
 	public void onClick(PlayerInteractEvent event) {
-		if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+		if (event.getItem() == null) {
+			return;
+		}
+
+		if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (event.getClickedBlock() != null) {
 				if (blockedMaterials.contains(event.getClickedBlock().getType()) || (event.getClickedBlock().getType().equals(Material.COMPOSTER) && ((org.bukkit.block.data.Levelled) event.getClickedBlock().getBlockData()).getLevel() == 8) || (event.getClickedBlock().getType().equals(Material.LECTERN) && ((org.bukkit.block.data.type.Lectern) event.getClickedBlock().getBlockData()).hasBook())) {
 					return;
 				}
 			}
 
-			ItemStack item;
-			switch (event.getHand()) {
-				case HAND:
-					item = event.getPlayer().getInventory().getItemInMainHand().clone();
-					break;
-				
-				case OFF_HAND:
-					item = event.getPlayer().getInventory().getItemInOffHand().clone();
-					break;
-
-				default:
-					return;
-			}
+			ItemStack item = event.getItem();
 			
 			if (item.getItemMeta() instanceof Damageable) {
-				Damageable item_meta = (Damageable) item.getItemMeta();
-				item_meta.setDamage(0);
-				item.setItemMeta((ItemMeta) item_meta);
+				ItemStack item_test = item.clone();
+				Damageable item_test_meta = (Damageable) item.getItemMeta();
+				item_test_meta.setDamage(0);
+				item_test.setItemMeta((ItemMeta) item_test_meta);
 
-				if (item.equals(Main.items.get("tomahawk"))) {
-					new TomahawkTask(entityHider, event.getPlayer().getEyeLocation(), event.getPlayer().getLocation().getDirection().multiply(1.4)).runTaskTimer(plugin, 0, 1);
+				if (item_test.equals(Main.items.get("tomahawk"))) {
+					new TomahawkTask(item, entityHider, event.getPlayer().getEyeLocation(), event.getPlayer().getLocation().getDirection().multiply(1.4)).runTaskTimer(plugin, 0, 1);
+					switch (event.getHand()) {
+						case HAND:
+							event.getPlayer().getInventory().getItemInMainHand().setAmount(0);
+							break;
+						
+						case OFF_HAND:
+							event.getPlayer().getInventory().getItemInOffHand().setAmount(0);
+							break;
+						
+						default:
+							break;
+					}
 				}
 			}
 		}
