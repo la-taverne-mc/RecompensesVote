@@ -1,7 +1,6 @@
 package fr.neolithic.recompensesvote;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -9,7 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.Lists;
 
@@ -17,20 +15,11 @@ public class Commands implements TabExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (command.getName().equalsIgnoreCase("test") && sender instanceof Player) {
-			Player player = (Player) sender;
-			for(Map.Entry<String, String> entry : Main.effect.entrySet()) {
-				player.sendMessage(entry.getKey() + " : " + entry.getValue() + " : " + String.valueOf(Main.effectTime.get(entry.getKey())));
-			}
-			
-			return true;
-		}
-		
-		else if (command.getName().equalsIgnoreCase("selectvotereward")) {
+		if (command.getName().equalsIgnoreCase("selectvotereward")) {
 			Player receiver = null;
 			Float randomPercent = new Random().nextFloat();
-			Float lastPercent = 0.f;
-			Float total = 0.f;
+			Float lastPercent = 0f;
+			Float total = 0f;
 			
 			if (args.length < 1 && sender instanceof Player) {
 				receiver = (Player) sender;
@@ -42,14 +31,14 @@ public class Commands implements TabExecutor {
 				sender.sendMessage("§cInvalid player name");
 			}
 			
-			for (Float rewardChance : Main.votingRewards.values()) {
-				total += rewardChance;
+			for (Items item : Items.values()) {
+				total += item.getRewardChance();
 			}
 			
-			for (Map.Entry<ItemStack, Float> reward : Main.votingRewards.entrySet()) {
-				Float percent = reward.getValue() / total;
+			for (Items item  : Items.values()) {
+				Float percent = item.getRewardChance() / total;
 				if (randomPercent >= lastPercent && randomPercent < lastPercent + percent) {
-					receiver.getInventory().addItem(reward.getKey());
+					receiver.getInventory().addItem(item.getItem());
 					return true;
 				}
 				lastPercent += percent;
@@ -60,8 +49,8 @@ public class Commands implements TabExecutor {
 		
 		else if (command.getName().equalsIgnoreCase("item") && sender instanceof Player && args.length == 1) {
 			Player player = (Player) sender;
-			if (Main.items.containsKey(args[0])) {
-				player.getInventory().addItem(Main.items.get(args[0]));
+			if (Items.contains(args[0]) && Items.getItemNamed(args[0]).isCustom()) {
+				player.getInventory().addItem(Items.getItemNamed(args[0]).getItem());
 			}
 			else {
 				player.sendMessage("§cInvalid item name");
@@ -76,16 +65,14 @@ public class Commands implements TabExecutor {
 			if (args.length == 1) {
 				List<String> list = Lists.newArrayList();
 				
-				for (String item : Main.items.keySet()) {
-					if (item.toLowerCase().startsWith(args[0].toLowerCase())) {
-						list.add(item);
+				for (Items item : Items.values()) {
+					if (item.isCustom() && item.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
+						list.add(item.getName());
 					}
 				}
 				
 				return list;
 			}
-
-			return null;
 		}
 		
 		return null;

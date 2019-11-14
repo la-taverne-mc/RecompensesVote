@@ -1,7 +1,6 @@
 package fr.neolithic.recompensesvote.listeners;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -11,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,11 +27,13 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import fr.neolithic.recompensesvote.Items;
 import fr.neolithic.recompensesvote.Main;
+import fr.neolithic.recompensesvote.tasks.BootsTask;
 import fr.neolithic.recompensesvote.tasks.CreeperEffect;
 import fr.neolithic.recompensesvote.tasks.FlyEffect;
 import fr.neolithic.recompensesvote.tasks.PhantomEffect;
@@ -47,30 +49,22 @@ public class Listeners implements Listener {
 	public void onPlayerHit(EntityDamageByEntityEvent event) {
 		if (event.getDamager() instanceof Player) {
 			Player damager = (Player) event.getDamager();
-			org.bukkit.entity.Damageable target = (org.bukkit.entity.Damageable) event.getEntity();
+			Damageable target = (Damageable) event.getEntity();
 			
 			if (event.getCause().equals(DamageCause.ENTITY_ATTACK) || event.getCause().equals(DamageCause.ENTITY_SWEEP_ATTACK)) {
-				ItemStack damagerWeapon = damager.getInventory().getItemInMainHand().clone();
-				
-				if (damagerWeapon.getItemMeta() instanceof Damageable) {
-					Damageable damagerWeapon_meta = (Damageable) damagerWeapon.getItemMeta();
-					damagerWeapon_meta.setDamage(0);
-					damagerWeapon.setItemMeta((ItemMeta) damagerWeapon_meta);
-				}
-				
-				if (damagerWeapon.equals(Main.items.get("baseballBat"))) {
+				if (Items.BASEBALL_BAT.compareTo(damager.getInventory().getItemInMainHand())) {
 					damager.getWorld().playSound(damager.getLocation(), Sound.BLOCK_ANVIL_LAND, SoundCategory.PLAYERS, 1, (float) 1.12);
 				}
 				
-				else if (damagerWeapon.equals(Main.items.get("inuitAxe"))) {
+				else if (Items.ULU.compareTo(damager.getInventory().getItemInMainHand())) {
 					if (event.getEntityType().equals(EntityType.POLAR_BEAR) && (target.getHealth() - event.getDamage() <= 0)) {
-						target.getWorld().dropItemNaturally(target.getLocation(), Main.items.get("rawBear"));
+						target.getWorld().dropItemNaturally(target.getLocation(), Items.RAW_BEAR.getItem());
 					}
 				}
 				
-				else if (damagerWeapon.equals(Main.items.get("indianAxe"))) {
+				else if (Items.INDIAN_SPEAR.compareTo(damager.getInventory().getItemInMainHand())) {
 					if ((event.getEntityType().equals(EntityType.DONKEY) || event.getEntityType().equals(EntityType.HORSE) || event.getEntityType().equals(EntityType.MULE)) && target.getHealth() - event.getDamage() <= 0) {
-						target.getWorld().dropItemNaturally(target.getLocation(), Main.items.get("rawHorse"));
+						target.getWorld().dropItemNaturally(target.getLocation(), Items.RAW_HORSE.getItem());
 					}
 				}
 			}
@@ -79,21 +73,50 @@ public class Listeners implements Listener {
 	
 	@EventHandler
 	public void onConsume(PlayerItemConsumeEvent event) {
-		if (event.getItem().isSimilar(Main.items.get("cookedBear"))) {
+		if (Items.COOKED_BEAR.compareTo(event.getItem())) {
 			Player player = event.getPlayer();
 			player.setFoodLevel(20);
 			player.setSaturation((float) Math.max(player.getSaturation(), 16));
 		}
 		
-		else if (event.getItem().isSimilar(Main.items.get("cookedHorse"))) {
+		else if (Items.COOKED_HORSE.compareTo(event.getItem())) {
 			Player player = event.getPlayer();
 			player.setFoodLevel(player.getFoodLevel() + 3);
 			player.setSaturation((float) Math.max(player.getSaturation(), 13.5));
 		}
+
+		else if (Items.MINING_POTION.compareTo(event.getItem())) {
+			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 12000, 2));
+		}
+
+		else if (Items.SWIMING_POTION.compareTo(event.getItem())) {
+			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER, 12000, 0));
+			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 12000, 0));
+		}
+
+		else if (Items.PHANTOM_POTION.compareTo(event.getItem())) {
+			if (Main.effect.containsKey(event.getPlayer().getUniqueId())) {
+				event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
+				event.setCancelled(true);
+				return;
+			}
+
+			new PhantomEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
+		}
+
+		else if (Items.CREEPER_POTION.compareTo(event.getItem())) {
+			if (Main.effect.containsKey(event.getPlayer().getUniqueId())) {
+				event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
+				event.setCancelled(true);
+				return;
+			}
+
+			new CreeperEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
+		}
 		
 		else if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
-			if (event.getItem().isSimilar(Main.items.get("fly1min"))) {
-				if (Main.effect.containsKey(event.getPlayer().getName())) {
+			if (Items.FLY_1.compareTo(event.getItem())) {
+				if (Main.effect.containsKey(event.getPlayer().getUniqueId())) {
 					event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
 					event.setCancelled(true);
 					return;
@@ -102,8 +125,8 @@ public class Listeners implements Listener {
 				new FlyEffect(event.getPlayer(), 60).runTaskTimer(plugin, 0, 20);
 			}
 			
-			else if (event.getItem().isSimilar(Main.items.get("fly5min"))) {
-				if (Main.effect.containsKey(event.getPlayer().getName())) {
+			else if (Items.FLY_5.compareTo(event.getItem())) {
+				if (Main.effect.containsKey(event.getPlayer().getUniqueId())) {
 					event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
 					event.setCancelled(true);
 					return;
@@ -112,8 +135,8 @@ public class Listeners implements Listener {
 				new FlyEffect(event.getPlayer(), 300).runTaskTimer(plugin, 0, 20);
 			}
 			
-			else if (event.getItem().isSimilar(Main.items.get("fly10min"))) {
-				if (Main.effect.containsKey(event.getPlayer().getName())) {
+			else if (Items.FLY_10.compareTo(event.getItem())) {
+				if (Main.effect.containsKey(event.getPlayer().getUniqueId())) {
 					event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
 					event.setCancelled(true);
 					return;
@@ -122,8 +145,8 @@ public class Listeners implements Listener {
 				new FlyEffect(event.getPlayer(), 600).runTaskTimer(plugin, 0, 20);
 			}
 			
-			else if (event.getItem().isSimilar(Main.items.get("fly20min"))) {
-				if (Main.effect.containsKey(event.getPlayer().getName())) {
+			else if (Items.FLY_20.compareTo(event.getItem())) {
+				if (Main.effect.containsKey(event.getPlayer().getUniqueId())) {
 					event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
 					event.setCancelled(true);
 					return;
@@ -131,42 +154,25 @@ public class Listeners implements Listener {
 				
 				new FlyEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
 			}
-			
-			else if (event.getItem().isSimilar(Main.items.get("antiPhantom"))) {
-				if (Main.effect.containsKey(event.getPlayer().getName())) {
-					event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
-					event.setCancelled(true);
-					return;
-				}
-				
-				new PhantomEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
-			}
-			
-			else if (event.getItem().isSimilar(Main.items.get("antiCreeper"))) {
-				if (Main.effect.containsKey(event.getPlayer().getName())) {
-					event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
-					event.setCancelled(true);
-					return;
-				}
-				
-				new CreeperEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
-			}
 		}
 	}
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		String playerEffect = Main.effect.get(event.getPlayer().getName());
-		
-		if (playerEffect != null) {
-			switch (playerEffect) {
-			case "fly":
-				new FlyEffect(event.getPlayer(), Main.effectTime.get(event.getPlayer().getName())).runTaskTimer(plugin, 0, 20);
-				break;
-			case "phantom":
-				new PhantomEffect(event.getPlayer(), Main.effectTime.get(event.getPlayer().getName())).runTaskTimer(plugin, 0, 20);
-				break;
+		if (Main.effect.get(event.getPlayer().getUniqueId()) != null) {
+			switch (Main.effect.get(event.getPlayer().getUniqueId())) {
+				case "fly":
+					new FlyEffect(event.getPlayer(), Main.effectTime.get(event.getPlayer().getUniqueId())).runTaskTimer(plugin, 0, 20);
+					break;
+					
+				case "phantom":
+					new PhantomEffect(event.getPlayer(), Main.effectTime.get(event.getPlayer().getUniqueId())).runTaskTimer(plugin, 0, 20);
+					break;
 			}
+		}
+
+		if (Main.wearingBoots.get(event.getPlayer().getUniqueId()) != null) {
+			new BootsTask(event.getPlayer()).runTaskTimer(plugin, 1, 20);
 		}
 	}
 	
@@ -174,13 +180,13 @@ public class Listeners implements Listener {
 	public void onItemPickup(EntityPickupItemEvent event) {
 		if (event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
-			if (event.getItem().getItemStack().equals(Main.items.get("rawHorse"))) {
+			if (Items.RAW_HORSE.compareTo(event.getItem().getItemStack())) {
 				player.discoverRecipe(new NamespacedKey(plugin, "cooked_horse"));
 				player.discoverRecipe(new NamespacedKey(plugin, "cooked_horse_from_smoking"));
 				player.discoverRecipe(new NamespacedKey(plugin, "cooked_horse_from_campfire_cooking"));
 			}
 			
-			else if (event.getItem().getItemStack().equals(Main.items.get("rawBear"))) {
+			else if (Items.RAW_BEAR.compareTo(event.getItem().getItemStack())) {
 				player.discoverRecipe(new NamespacedKey(plugin, "cooked_bear"));
 				player.discoverRecipe(new NamespacedKey(plugin, "cooked_bear_from_smoking"));
 				player.discoverRecipe(new NamespacedKey(plugin, "cooked_bear_from_campfire_cooking"));
@@ -190,22 +196,14 @@ public class Listeners implements Listener {
 	
 	@EventHandler
 	public void onPlayerBlockPlace(BlockPlaceEvent event) {
-		if (event.getItemInHand().isSimilar(Main.items.get("legendaryDirt"))) {
+		if (Items.LEGENDARY_DIRT.compareTo(event.getItemInHand())) {
 			event.setCancelled(true);
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerBlockBreak(BlockBreakEvent event) {
-		ItemStack playerTool = event.getPlayer().getInventory().getItemInMainHand().clone();
-		
-		if (playerTool.getItemMeta() instanceof Damageable) {
-			Damageable playerTool_meta = (Damageable) playerTool.getItemMeta();
-			playerTool_meta.setDamage(0);
-			playerTool.setItemMeta((ItemMeta) playerTool_meta);
-		}
-		
-		if (playerTool.equals(Main.items.get("goblinPickaxe"))) {
+		if (Items.GOBLIN_PICKAXE.compareTo(event.getPlayer().getInventory().getItemInMainHand())) {
 			if (event.getBlock().getType().equals(Material.STONE)) {
 				Location blockLocation = event.getBlock().getLocation();
 				event.setDropItems(false);
@@ -260,54 +258,34 @@ public class Listeners implements Listener {
 	
 	private boolean blockItemModifications(InventoryType invType, Set<Integer> slots, ItemStack item) {
 		switch (invType) {
-		case ANVIL:
-			if (slots.contains(0) || slots.contains(1) || slots.contains(2)) {
-				if (item.getItemMeta() instanceof Damageable) {
-					Damageable item_meta = (Damageable) item.getItemMeta();
-					item_meta.setDamage(0);
-					item.setItemMeta((ItemMeta) item_meta);
-				}
-				
-				for (Map.Entry<String, ItemStack> entry : Main.items.entrySet()) {
-					if (entry.getValue().isSimilar(item)) {
+			case ANVIL:
+				if (slots.contains(0) || slots.contains(1) || slots.contains(2)) {
+					if (Items.contains(item)) {
 						return true;
 					}
 				}
-			}
-			break;
-		case BREWING:
-			if (slots.contains(0) || slots.contains(1) || slots.contains(2) || slots.contains(3) || slots.contains(4)) {
-				if (item.getItemMeta() instanceof Damageable) {
-					Damageable item_meta = (Damageable) item.getItemMeta();
-					item_meta.setDamage(0);
-					item.setItemMeta((ItemMeta) item_meta);
-				}
-				
-				for (Map.Entry<String, ItemStack> entry : Main.items.entrySet()) {
-					if (entry.getValue().isSimilar(item)) {
+				break;
+
+			case BREWING:
+				if (slots.contains(0) || slots.contains(1) || slots.contains(2) || slots.contains(3) || slots.contains(4)) {
+					if (Items.contains(item)) {
 						return true;
 					}
 				}
-			}
-			break;
-		case ENCHANTING:
-			if (slots.contains(0) || slots.contains(1)) {
-				if (item.getItemMeta() instanceof Damageable) {
-					Damageable item_meta = (Damageable) item.getItemMeta();
-					item_meta.setDamage(0);
-					item.setItemMeta((ItemMeta) item_meta);
-				}
-				
-				for (Map.Entry<String, ItemStack> entry : Main.items.entrySet()) {
-					if (entry.getValue().isSimilar(item)) {
+				break;
+
+			case ENCHANTING:
+				if (slots.contains(0) || slots.contains(1)) {
+					if (Items.contains(item)) {
 						return true;
 					}
 				}
-			}
-			break;
-		default:
-			break;
+				break;
+
+			default:
+				break;
 		}
+
 		return false;
 	}
 }

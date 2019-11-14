@@ -3,6 +3,7 @@ package fr.neolithic.recompensesvote.listeners;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseArmorEvent;
@@ -12,14 +13,11 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import com.google.common.collect.Lists;
 
-import fr.neolithic.recompensesvote.Main;
+import fr.neolithic.recompensesvote.Items;
 import fr.neolithic.recompensesvote.tasks.BootsTask;
 
 public class ArmorListener implements Listener {
@@ -135,48 +133,27 @@ public class ArmorListener implements Listener {
 			if ((event.getSlotType().equals(SlotType.ARMOR) && event.getSlot() == 36 && !event.isShiftClick() && !event.getClick().equals(ClickType.NUMBER_KEY))) {
 				if (event.getCursor() == null) return;
 				
-				ItemStack item = event.getCursor().clone();
-				
-				if (item.getItemMeta() instanceof Damageable) {
-					Damageable item_meta = (Damageable) item.getItemMeta();
-					item_meta.setDamage(0);
-					item.setItemMeta((ItemMeta) item_meta);
-				}
-				
-				if (item.equals(Main.items.get("giantBoots"))) {
+				if (Items.GIANT_BOOTS.compareTo(event.getCursor())) {
 					event.getWhoClicked().sendMessage("equiped");
+					new BootsTask((Player) event.getWhoClicked()).runTaskTimer(plugin, 1, 20);
 				}
 			}
 			else if (event.isShiftClick()) {
 				if (event.getWhoClicked().getInventory().getBoots() == null) {
 					if (event.getCurrentItem() == null) return;
 					
-					ItemStack item = event.getCurrentItem().clone();
-					
-					if (item.getItemMeta() instanceof Damageable) {
-						Damageable item_meta = (Damageable) item.getItemMeta();
-						item_meta.setDamage(0);
-						item.setItemMeta((ItemMeta) item_meta);
-					}
-					
-					if (item.equals(Main.items.get("giantBoots"))) {
+					if (Items.GIANT_BOOTS.compareTo(event.getCurrentItem())) {
 						event.getWhoClicked().sendMessage("equiped");
+						new BootsTask((Player) event.getWhoClicked()).runTaskTimer(plugin, 1, 20);
 					}
 				}
 			}
 			else if (event.getClick().equals(ClickType.NUMBER_KEY)) {
 				if (event.getInventory().getItem(event.getHotbarButton() + 36) == null) return;
 				
-				ItemStack item = event.getInventory().getItem(event.getHotbarButton() + 36).clone();
-				
-				if (item.getItemMeta() instanceof Damageable) {
-					Damageable item_meta = (Damageable) item.getItemMeta();
-					item_meta.setDamage(0);
-					item.setItemMeta((ItemMeta) item_meta);
-				}
-				
-				if (item.equals(Main.items.get("giantBoots"))) {
+				if (Items.GIANT_BOOTS.compareTo(event.getInventory().getItem(event.getHotbarButton() + 36))) {
 					event.getWhoClicked().sendMessage("equiped");
+					new BootsTask((Player) event.getWhoClicked()).runTaskTimer(plugin, 1, 20);
 				}
 			}
 		}
@@ -187,18 +164,9 @@ public class ArmorListener implements Listener {
 		if (event.getInventory().getType().equals(InventoryType.CRAFTING)) {
 			if (event.getOldCursor() == null) return;
 			
-			ItemStack item = event.getOldCursor().clone();
-			
-			if (item.getItemMeta() instanceof Damageable) {
-				Damageable item_meta = (Damageable) item.getItemMeta();
-				item_meta.setDamage(0);
-				item.setItemMeta((ItemMeta) item_meta);
-			}
-			
-			if (item.equals(Main.items.get("giantBoots"))) {
-				if (event.getInventorySlots().contains(36)) {
-					event.getWhoClicked().sendMessage("equiped");
-				}
+			if (Items.GIANT_BOOTS.compareTo(event.getOldCursor()) && event.getInventorySlots().contains(36)) {
+				event.getWhoClicked().sendMessage("equiped");
+				new BootsTask((Player) event.getWhoClicked()).runTaskTimer(plugin, 1, 20);
 			}
 		}
 	}
@@ -207,16 +175,9 @@ public class ArmorListener implements Listener {
 	public void dispenseArmorEvent(BlockDispenseArmorEvent event) {
 		if (event.getItem() == null) return;
 		
-		ItemStack item = event.getItem().clone();
-		
-		if (item.getItemMeta() instanceof Damageable) {
-			Damageable item_meta = (Damageable) item.getItemMeta();
-			item_meta.setDamage(0);
-			item.setItemMeta((ItemMeta) item_meta);
-		}
-		
-		if (item.equals(Main.items.get("giantBoots"))) {
+		if (Items.GIANT_BOOTS.compareTo(event.getItem())) {
 			event.getTargetEntity().sendMessage("equiped");
+			new BootsTask((Player) event.getTargetEntity()).runTaskTimer(plugin, 0, 20);
 		}
 	}
 	
@@ -231,15 +192,7 @@ public class ArmorListener implements Listener {
 				}
 			}
 			
-			ItemStack item = event.getItem().clone();
-			
-			if (item.getItemMeta() instanceof Damageable) {
-				Damageable item_meta = (Damageable) item.getItemMeta();
-				item_meta.setDamage(0);
-				item.setItemMeta((ItemMeta) item_meta);
-			}
-			
-			if (item.equals(Main.items.get("giantBoots"))) {
+			if (Items.GIANT_BOOTS.compareTo(event.getItem())) {
 				event.getPlayer().sendMessage("equiped");
 				new BootsTask(event.getPlayer()).runTaskTimer(plugin, 1, 20);
 			}

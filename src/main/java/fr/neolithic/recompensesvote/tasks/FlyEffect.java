@@ -16,9 +16,9 @@ public class FlyEffect extends BukkitRunnable {
 		this.counter = counter;
 		
 		this.player.setAllowFlight(true);
-		if (!Main.effect.containsKey(this.player.getName())) {
-			Main.effect.put(player.getName(), "fly");
-			Main.effectTime.put(player.getName(), counter);
+		if (!Main.effect.containsKey(player.getUniqueId())) {
+			Main.effect.put(player.getUniqueId(), "fly");
+			Main.effectTime.put(player.getUniqueId(), counter);
 		}
 	}
 	
@@ -30,11 +30,11 @@ public class FlyEffect extends BukkitRunnable {
 		}
 		else {
 			if (counter <= 0 || (player.isDead() && player.isOnline())) {
-				Main.effectTime.remove(player.getName());
-				Main.effect.remove(player.getName());
+				Main.effectTime.remove(player.getUniqueId());
+				Main.effect.remove(player.getUniqueId());
 			}
 			else {
-				Main.effectTime.replace(player.getName(), counter);
+				Main.effectTime.replace(player.getUniqueId(), counter);
 			}
 			
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§eBon retour sur terre !"));

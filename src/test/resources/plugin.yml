@@ -5,10 +5,11 @@ version: "1.0"
 author: PoC4
 main: fr.neolithic.recompensesvote.Main
 commands:
-  test:
-    description: test
   selectvotereward:
     description: select vote reward
-    permission: neolithic.selectvotereward
+    permission: recompensesvote.selectvotereward
+    default: op
   item:
     description: give item
+    permission: recompensesvote.item
+    default: op

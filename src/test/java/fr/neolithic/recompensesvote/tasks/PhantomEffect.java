@@ -19,9 +19,9 @@ public class PhantomEffect extends BukkitRunnable {
 		this.player = player;
 		this.counter = counter;
 		
-		if (!Main.effect.containsKey(this.player.getName())) {
-			Main.effect.put(this.player.getName(), "phantom");
-			Main.effectTime.put(this.player.getName(), this.counter);
+		if (!Main.effect.containsKey(player.getUniqueId())) {
+			Main.effect.put(player.getUniqueId(), "phantom");
+			Main.effectTime.put(player.getUniqueId(), this.counter);
 		}
 	}
 	
@@ -44,11 +44,11 @@ public class PhantomEffect extends BukkitRunnable {
 		}
 		else {
 			if (counter <= 0 || (player.isDead() && player.isOnline())) {
-				Main.effectTime.remove(player.getName());
-				Main.effect.remove(player.getName());
+				Main.effectTime.remove(player.getUniqueId());
+				Main.effect.remove(player.getUniqueId());
 			}
 			else {
-				Main.effectTime.replace(player.getName(), counter);
+				Main.effectTime.replace(player.getUniqueId(), counter);
 			}
 			
 			this.cancel();
