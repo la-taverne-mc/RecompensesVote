@@ -53,6 +53,7 @@ public class BootsTask extends BukkitRunnable {
 		}
 		else {
 			Main.wearingBoots.putIfAbsent(player.getUniqueId(), true);
+			this.cancel();
 		}
 	}
 }
