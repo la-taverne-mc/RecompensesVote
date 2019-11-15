@@ -50,7 +50,15 @@ public enum Items {
     COOKED_BEAR("cooked_bear", 0f, true),
     RAW_HORSE("raw_horse", 0f, true),
     RAW_BEAR("raw_bear", 0f, true),
-    LEGENDARY_DIRT("legendary_dirt", 0.001f, true);
+    LEGENDARY_DIRT("legendary_dirt", 0.001f, true),
+    EMPTY_FLY_1("empty_fly_1", 0f, true),
+    EMPTY_FLY_5("empty_fly_5", 0f, true),
+    EMPTY_FLY_10("empty_fly_10", 0f, true),
+    EMPTY_FLY_20("empty_fly_20", 0f, true),
+    EMPTY_PHANTOM_POTION("empty_phantom_potion", 0f, true),
+    EMPTY_CREEPER_POTION("empty_creeper_potion", 0f, true),
+    EMPTY_MINING_POTION("empty_mining_potion", 0f, true),
+    EMPTY_SWIMING_POTION("empty_swiming_potion", 0f, true);
 
     private final String name;
     private final ItemStack item;
@@ -193,12 +201,124 @@ public enum Items {
                 item = createLegendaryDirt();
                 break;
 
+        case "empty_fly_1":
+            item = createEmptyFly1();
+            break;
+
+        case "empty_fly_5":
+            item = createEmptyFly5();
+            break;
+
+        case "empty_fly_10":
+            item = createEmptyFly10();
+            break;
+
+        case "empty_fly_20":
+            item = createEmptyFly20();
+            break;
+
+        case "empty_phantom_potion":
+            item = createEmptyPhantomPotion();
+            break;
+
+        case "empty_creeper_potion":
+            item = createEmptyCreeperPotion();
+            break;
+
+        case "empty_mining_potion":
+            item = createEmptyMiningPotion();
+            break;
+
+        case "empty_swiming_potion":
+            item = createEmptySwimingPotion();
+            break;
+
             default:
                 item = new ItemStack(Material.AIR);
                 break;
         }
 
         this.item = item;
+    }
+
+    private ItemStack createEmptyFly1() {
+        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        itemMeta.setCustomModelData(1);
+
+        item.setItemMeta(itemMeta);
+        return item;
+    }
+
+    private ItemStack createEmptyFly5() {
+        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        itemMeta.setCustomModelData(2);
+
+        item.setItemMeta(itemMeta);
+        return item;
+    }
+
+    private ItemStack createEmptyFly10() {
+        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        itemMeta.setCustomModelData(3);
+
+        item.setItemMeta(itemMeta);
+        return item;
+    }
+
+    private ItemStack createEmptyFly20() {
+        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        itemMeta.setCustomModelData(4);
+
+        item.setItemMeta(itemMeta);
+        return item;
+    }
+
+    private ItemStack createEmptyPhantomPotion() {
+        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        itemMeta.setCustomModelData(5);
+
+        item.setItemMeta(itemMeta);
+        return item;
+    }
+
+    private ItemStack createEmptyCreeperPotion() {
+        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        itemMeta.setCustomModelData(6);
+
+        item.setItemMeta(itemMeta);
+        return item;
+    }
+
+    private ItemStack createEmptyMiningPotion() {
+        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        itemMeta.setCustomModelData(7);
+
+        item.setItemMeta(itemMeta);
+        return item;
+    }
+
+    private ItemStack createEmptySwimingPotion() {
+        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        itemMeta.setCustomModelData(8);
+
+        item.setItemMeta(itemMeta);
+        return item;
     }
 
     private ItemStack createMendingBook() {

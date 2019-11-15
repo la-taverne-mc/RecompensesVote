@@ -87,11 +87,13 @@ public class Listeners implements Listener {
 
 		else if (Items.MINING_POTION.compareTo(event.getItem())) {
 			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 12000, 2));
+			event.setItem(Items.EMPTY_MINING_POTION.getItem());
 		}
 
 		else if (Items.SWIMING_POTION.compareTo(event.getItem())) {
 			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER, 12000, 0));
 			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 12000, 0));
+			event.setItem(Items.EMPTY_SWIMING_POTION.getItem());
 		}
 
 		else if (Items.PHANTOM_POTION.compareTo(event.getItem())) {
@@ -102,6 +104,7 @@ public class Listeners implements Listener {
 			}
 
 			new PhantomEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
+			event.setItem(Items.EMPTY_PHANTOM_POTION.getItem());
 		}
 
 		else if (Items.CREEPER_POTION.compareTo(event.getItem())) {
@@ -112,6 +115,7 @@ public class Listeners implements Listener {
 			}
 
 			new CreeperEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
+			event.setItem(Items.EMPTY_CREEPER_POTION.getItem());
 		}
 		
 		else if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
@@ -123,6 +127,7 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 60).runTaskTimer(plugin, 0, 20);
+				event.setItem(Items.EMPTY_FLY_1.getItem());
 			}
 			
 			else if (Items.FLY_5.compareTo(event.getItem())) {
@@ -133,6 +138,7 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 300).runTaskTimer(plugin, 0, 20);
+				event.setItem(Items.EMPTY_FLY_5.getItem());
 			}
 			
 			else if (Items.FLY_10.compareTo(event.getItem())) {
@@ -143,6 +149,7 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 600).runTaskTimer(plugin, 0, 20);
+				event.setItem(Items.EMPTY_FLY_10.getItem());
 			}
 			
 			else if (Items.FLY_20.compareTo(event.getItem())) {
@@ -153,6 +160,7 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
+				event.setItem(Items.EMPTY_FLY_20.getItem());
 			}
 		}
 	}
