@@ -21,8 +21,9 @@ public class PhantomEffect extends BukkitRunnable {
 		
 		if (!Main.effect.containsKey(player.getUniqueId())) {
 			Main.effect.put(player.getUniqueId(), "phantom");
-			Main.effectTime.put(player.getUniqueId(), this.counter);
 		}
+
+		Main.runningTasks.add(this);
 	}
 	
 	@Override
@@ -43,16 +44,20 @@ public class PhantomEffect extends BukkitRunnable {
 			counter--;
 		}
 		else {
-			if (counter <= 0 || (player.isDead() && player.isOnline())) {
-				Main.effectTime.remove(player.getUniqueId());
-				Main.effect.remove(player.getUniqueId());
-			}
-			else {
-				Main.effectTime.replace(player.getUniqueId(), counter);
-			}
-			
-			this.cancel();
+			stop();
+			Main.runningTasks.remove(this);
 		}
+	}
+
+	public void stop() {
+		if (counter <= 0 || (player.isDead() && player.isOnline())) {
+			Main.effectTime.remove(player.getUniqueId());
+			Main.effect.remove(player.getUniqueId());
+		} else {
+			Main.effectTime.putIfAbsent(player.getUniqueId(), counter);
+		}
+
+		this.cancel();
 	}
 	
 	private String convertTime(int time) {

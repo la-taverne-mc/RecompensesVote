@@ -134,7 +134,6 @@ public class ArmorListener implements Listener {
 				if (event.getCursor() == null) return;
 				
 				if (Items.GIANT_BOOTS.compareTo(event.getCursor())) {
-					event.getWhoClicked().sendMessage("equiped");
 					new BootsTask((Player) event.getWhoClicked()).runTaskTimer(plugin, 1, 20);
 				}
 			}
@@ -143,7 +142,6 @@ public class ArmorListener implements Listener {
 					if (event.getCurrentItem() == null) return;
 					
 					if (Items.GIANT_BOOTS.compareTo(event.getCurrentItem())) {
-						event.getWhoClicked().sendMessage("equiped");
 						new BootsTask((Player) event.getWhoClicked()).runTaskTimer(plugin, 1, 20);
 					}
 				}
@@ -152,7 +150,6 @@ public class ArmorListener implements Listener {
 				if (event.getInventory().getItem(event.getHotbarButton() + 36) == null) return;
 				
 				if (Items.GIANT_BOOTS.compareTo(event.getInventory().getItem(event.getHotbarButton() + 36))) {
-					event.getWhoClicked().sendMessage("equiped");
 					new BootsTask((Player) event.getWhoClicked()).runTaskTimer(plugin, 1, 20);
 				}
 			}
@@ -165,7 +162,6 @@ public class ArmorListener implements Listener {
 			if (event.getOldCursor() == null) return;
 			
 			if (Items.GIANT_BOOTS.compareTo(event.getOldCursor()) && event.getInventorySlots().contains(36)) {
-				event.getWhoClicked().sendMessage("equiped");
 				new BootsTask((Player) event.getWhoClicked()).runTaskTimer(plugin, 1, 20);
 			}
 		}
@@ -176,7 +172,6 @@ public class ArmorListener implements Listener {
 		if (event.getItem() == null) return;
 		
 		if (Items.GIANT_BOOTS.compareTo(event.getItem())) {
-			event.getTargetEntity().sendMessage("equiped");
 			new BootsTask((Player) event.getTargetEntity()).runTaskTimer(plugin, 0, 20);
 		}
 	}
@@ -193,7 +188,6 @@ public class ArmorListener implements Listener {
 			}
 			
 			if (Items.GIANT_BOOTS.compareTo(event.getItem())) {
-				event.getPlayer().sendMessage("equiped");
 				new BootsTask(event.getPlayer()).runTaskTimer(plugin, 1, 20);
 			}
 		}

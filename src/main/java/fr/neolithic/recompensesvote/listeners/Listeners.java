@@ -126,11 +126,11 @@ public class Listeners implements Listener {
 					return;
 				}
 				
-				new FlyEffect(event.getPlayer(), 60).runTaskTimer(plugin, 0, 20);
+				new FlyEffect(event.getPlayer(), 150).runTaskTimer(plugin, 0, 20);
 				event.setItem(Items.EMPTY_FLY_1.getItem());
 			}
 			
-			else if (Items.FLY_5.compareTo(event.getItem())) {
+			else if (Items.FLY_2.compareTo(event.getItem())) {
 				if (Main.effect.containsKey(event.getPlayer().getUniqueId())) {
 					event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
 					event.setCancelled(true);
@@ -138,10 +138,10 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 300).runTaskTimer(plugin, 0, 20);
-				event.setItem(Items.EMPTY_FLY_5.getItem());
+				event.setItem(Items.EMPTY_FLY_2.getItem());
 			}
 			
-			else if (Items.FLY_10.compareTo(event.getItem())) {
+			else if (Items.FLY_3.compareTo(event.getItem())) {
 				if (Main.effect.containsKey(event.getPlayer().getUniqueId())) {
 					event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
 					event.setCancelled(true);
@@ -149,10 +149,10 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 600).runTaskTimer(plugin, 0, 20);
-				event.setItem(Items.EMPTY_FLY_10.getItem());
+				event.setItem(Items.EMPTY_FLY_3.getItem());
 			}
 			
-			else if (Items.FLY_20.compareTo(event.getItem())) {
+			else if (Items.FLY_4.compareTo(event.getItem())) {
 				if (Main.effect.containsKey(event.getPlayer().getUniqueId())) {
 					event.getPlayer().sendMessage("§eTu ne peux pas boire cette potion tant que tu en as une autre active");
 					event.setCancelled(true);
@@ -160,7 +160,7 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
-				event.setItem(Items.EMPTY_FLY_20.getItem());
+				event.setItem(Items.EMPTY_FLY_4.getItem());
 			}
 		}
 	}
@@ -179,7 +179,7 @@ public class Listeners implements Listener {
 			}
 		}
 
-		if (Main.wearingBoots.get(event.getPlayer().getUniqueId()) != null) {
+		if (Main.wearingBoots.contains(event.getPlayer().getUniqueId())) {
 			new BootsTask(event.getPlayer()).runTaskTimer(plugin, 1, 20);
 		}
 	}

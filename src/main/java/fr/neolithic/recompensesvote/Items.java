@@ -34,9 +34,9 @@ public enum Items {
     FORTUNE_BOOK("fortune_book", 0.07f, false),
     MENDING_BOOK("mending_book", 0.04f, false),
     FLY_1("fly_1", 0.22f, true),
-    FLY_5("fly_5", 0.15f, true),
-    FLY_10("fly_10", 0.1f, true),
-    FLY_20("fly_20", 0.05f, true),
+    FLY_2("fly_2", 0.15f, true),
+    FLY_3("fly_3", 0.1f, true),
+    FLY_4("fly_4", 0.05f, true),
     PHANTOM_POTION("phantom_potion", 0.17f, true),
     CREEPER_POTION("creeper_potion", 0.16f, true),
     MINING_POTION("mining_potion", 0.20f, true),
@@ -52,9 +52,9 @@ public enum Items {
     RAW_BEAR("raw_bear", 0f, true),
     LEGENDARY_DIRT("legendary_dirt", 0.001f, true),
     EMPTY_FLY_1("empty_fly_1", 0f, true),
-    EMPTY_FLY_5("empty_fly_5", 0f, true),
-    EMPTY_FLY_10("empty_fly_10", 0f, true),
-    EMPTY_FLY_20("empty_fly_20", 0f, true),
+    EMPTY_FLY_2("empty_fly_2", 0f, true),
+    EMPTY_FLY_3("empty_fly_3", 0f, true),
+    EMPTY_FLY_4("empty_fly_4", 0f, true),
     EMPTY_PHANTOM_POTION("empty_phantom_potion", 0f, true),
     EMPTY_CREEPER_POTION("empty_creeper_potion", 0f, true),
     EMPTY_MINING_POTION("empty_mining_potion", 0f, true),
@@ -133,16 +133,16 @@ public enum Items {
                 item = createFly1();
                 break;
 
-            case "fly_5":
-                item = createFly5();
+            case "fly_2":
+                item = createFly2();
                 break;
 
-            case "fly_10":
-                item = createFly10();
+            case "fly_3":
+                item = createFly3();
                 break;
 
-            case "fly_20":
-                item = createFly20();
+            case "fly_4":
+                item = createFly4();
                 break;
 
             case "phantom_potion":
@@ -205,16 +205,16 @@ public enum Items {
             item = createEmptyFly1();
             break;
 
-        case "empty_fly_5":
-            item = createEmptyFly5();
+        case "empty_fly_2":
+            item = createEmptyFly2();
             break;
 
-        case "empty_fly_10":
-            item = createEmptyFly10();
+        case "empty_fly_3":
+            item = createEmptyFly3();
             break;
 
-        case "empty_fly_20":
-            item = createEmptyFly20();
+        case "empty_fly_4":
+            item = createEmptyFly4();
             break;
 
         case "empty_phantom_potion":
@@ -251,7 +251,7 @@ public enum Items {
         return item;
     }
 
-    private ItemStack createEmptyFly5() {
+    private ItemStack createEmptyFly2() {
         ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
         ItemMeta itemMeta = item.getItemMeta();
 
@@ -261,7 +261,7 @@ public enum Items {
         return item;
     }
 
-    private ItemStack createEmptyFly10() {
+    private ItemStack createEmptyFly3() {
         ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
         ItemMeta itemMeta = item.getItemMeta();
 
@@ -271,7 +271,7 @@ public enum Items {
         return item;
     }
 
-    private ItemStack createEmptyFly20() {
+    private ItemStack createEmptyFly4() {
         ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
         ItemMeta itemMeta = item.getItemMeta();
 
@@ -568,8 +568,8 @@ public enum Items {
 
         itemMeta.setColor(Color.fromRGB(255, 243, 122));
         itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-        itemMeta.setDisplayName("§bPotion de Vol 1min");
-        itemMeta.setLore(Arrays.asList("§eBoire cette potion", "§evous permet de voler", "§ependant §61min"));
+        itemMeta.setDisplayName("§bPotion de Vol 2min30s");
+        itemMeta.setLore(Arrays.asList("§eBoire cette potion", "§evous permet de voler", "§ependant §62min30s"));
         itemMeta.setCustomModelData(1);
 
         item.setItemMeta(itemMeta);
@@ -577,7 +577,7 @@ public enum Items {
         return item;
     }
 
-    private ItemStack createFly5() {
+    private ItemStack createFly2() {
         ItemStack item = new ItemStack(Material.POTION);
         PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
 
@@ -592,7 +592,7 @@ public enum Items {
         return item;
     }
 
-    private ItemStack createFly10() {
+    private ItemStack createFly3() {
         ItemStack item = new ItemStack(Material.POTION);
         PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
 
@@ -607,7 +607,7 @@ public enum Items {
         return item;
     }
 
-    private ItemStack createFly20() {
+    private ItemStack createFly4() {
         ItemStack item = new ItemStack(Material.POTION);
         PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
 

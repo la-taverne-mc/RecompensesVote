@@ -18,8 +18,9 @@ public class FlyEffect extends BukkitRunnable {
 		this.player.setAllowFlight(true);
 		if (!Main.effect.containsKey(player.getUniqueId())) {
 			Main.effect.put(player.getUniqueId(), "fly");
-			Main.effectTime.put(player.getUniqueId(), counter);
 		}
+
+		Main.runningTasks.add(this);
 	}
 	
 	@Override
@@ -29,18 +30,23 @@ public class FlyEffect extends BukkitRunnable {
 			counter--;
 		}
 		else {
-			if (counter <= 0 || (player.isDead() && player.isOnline())) {
-				Main.effectTime.remove(player.getUniqueId());
-				Main.effect.remove(player.getUniqueId());
-			}
-			else {
-				Main.effectTime.replace(player.getUniqueId(), counter);
-			}
-			
-			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§eBon retour sur terre !"));
-			this.player.setAllowFlight(false);
-			this.cancel();
+			stop();
+			Main.runningTasks.remove(this);
 		}
+	}
+
+	public void stop() {
+		if (counter <= 0 || (player.isDead() && player.isOnline())) {
+			Main.effectTime.remove(player.getUniqueId());
+			Main.effect.remove(player.getUniqueId());
+			player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+					TextComponent.fromLegacyText("§eBon retour sur terre !"));
+		} else {
+			Main.effectTime.putIfAbsent(player.getUniqueId(), counter);
+		}
+
+		this.player.setAllowFlight(false);
+		this.cancel();
 	}
 	
 	private String convertTime(int time) {

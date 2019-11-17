@@ -20,13 +20,14 @@ public class BootsTask extends BukkitRunnable {
 	public BootsTask(Player player) {
 		this.player = player;
 		this.lastLocation = this.player.getLocation();
+		Main.runningTasks.add(this);
 	}
 	
 	@Override
 	public void run() {
 		if (player.getInventory().getBoots() == null || !Items.GIANT_BOOTS.compareTo(player.getInventory().getBoots())) {
-			this.cancel();
-			Main.wearingBoots.remove(player.getUniqueId());
+			stop();
+			Main.runningTasks.remove(this);
 			return;
 		}
 		
@@ -52,7 +53,19 @@ public class BootsTask extends BukkitRunnable {
 			}
 		}
 		else {
-			Main.wearingBoots.putIfAbsent(player.getUniqueId(), true);
+			stop();
+			Main.runningTasks.remove(this);
 		}
+	}
+
+	public void stop() {
+		if (player.getInventory().getBoots() == null || !Items.GIANT_BOOTS.compareTo(player.getInventory().getBoots())) {
+			Main.wearingBoots.remove(player.getUniqueId());
+		}
+		else {
+			Main.wearingBoots.add(player.getUniqueId());
+		}
+
+		this.cancel();
 	}
 }
