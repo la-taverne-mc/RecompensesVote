@@ -62,7 +62,7 @@ public class BootsTask extends BukkitRunnable {
 		if (player.getInventory().getBoots() == null || !Items.GIANT_BOOTS.compareTo(player.getInventory().getBoots())) {
 			Main.wearingBoots.remove(player.getUniqueId());
 		}
-		else {
+		else if (!Main.wearingBoots.contains(player.getUniqueId())) {
 			Main.wearingBoots.add(player.getUniqueId());
 		}
 

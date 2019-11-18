@@ -81,7 +81,7 @@ public class Main extends JavaPlugin {
 				}
 			}
 
-			if (Main.wearingBoots.contains(player.getUniqueId())) {
+			if (wearingBoots.contains(player.getUniqueId())) {
 				new BootsTask(player).runTaskTimer(this, 1, 20);
 			}
 		}

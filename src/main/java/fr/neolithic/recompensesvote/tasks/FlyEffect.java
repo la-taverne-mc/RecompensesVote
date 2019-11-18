@@ -39,10 +39,11 @@ public class FlyEffect extends BukkitRunnable {
 		if (counter <= 0 || (player.isDead() && player.isOnline())) {
 			Main.effectTime.remove(player.getUniqueId());
 			Main.effect.remove(player.getUniqueId());
-			player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-					TextComponent.fromLegacyText("§eBon retour sur terre !"));
+			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("§eBon retour sur terre !"));
 		} else {
-			Main.effectTime.putIfAbsent(player.getUniqueId(), counter);
+			if (Main.effectTime.replace(player.getUniqueId(), counter) == null) {
+				Main.effectTime.put(player.getUniqueId(), counter);
+			}
 		}
 
 		this.player.setAllowFlight(false);

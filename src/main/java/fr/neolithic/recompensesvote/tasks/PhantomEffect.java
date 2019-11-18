@@ -54,7 +54,9 @@ public class PhantomEffect extends BukkitRunnable {
 			Main.effectTime.remove(player.getUniqueId());
 			Main.effect.remove(player.getUniqueId());
 		} else {
-			Main.effectTime.putIfAbsent(player.getUniqueId(), counter);
+			if (Main.effectTime.replace(player.getUniqueId(), counter) == null) {
+				Main.effectTime.put(player.getUniqueId(), counter);
+			}
 		}
 
 		this.cancel();

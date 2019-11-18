@@ -52,7 +52,9 @@ public class CreeperEffect extends BukkitRunnable {
 			Main.effect.remove(player.getUniqueId());
 			Main.effectTime.remove(player.getUniqueId());
 		} else {
-			Main.effectTime.putIfAbsent(player.getUniqueId(), this.counter);
+			if (Main.effectTime.replace(player.getUniqueId(), counter) == null) {
+				Main.effectTime.put(player.getUniqueId(), counter);
+			}
 		}
 
 		this.cancel();
