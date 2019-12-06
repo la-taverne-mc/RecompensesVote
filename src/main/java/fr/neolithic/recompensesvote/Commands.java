@@ -51,11 +51,14 @@ public class Commands implements TabExecutor {
 			Player player = (Player) sender;
 			if (Items.contains(args[0]) && Items.getItemNamed(args[0]).isCustom()) {
 				player.getInventory().addItem(Items.getItemNamed(args[0]).getItem());
+				return true;
 			}
 			else {
 				player.sendMessage("§cInvalid item name");
+				return false;
 			}
 		}
+
 		return false;
 	}
 	
