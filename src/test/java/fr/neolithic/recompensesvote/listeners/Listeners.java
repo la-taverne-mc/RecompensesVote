@@ -237,7 +237,7 @@ public class Listeners implements Listener {
 	
 	@EventHandler
 	public void onPlayerBlockPlace(BlockPlaceEvent event) {
-		if (Items.LEGENDARY_DIRT.compareTo(event.getItemInHand())) {
+		if (Items.CANDY_CANE.compareTo(event.getItemInHand())) {
 			event.setCancelled(true);
 		}
 	}

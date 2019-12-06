@@ -50,15 +50,7 @@ public enum Items {
     COOKED_BEAR("cooked_bear", 0f, true),
     RAW_HORSE("raw_horse", 0f, true),
     RAW_BEAR("raw_bear", 0f, true),
-    LEGENDARY_DIRT("legendary_dirt", 0.001f, true),
-    EMPTY_FLY_1("empty_fly_1", 0f, true),
-    EMPTY_FLY_2("empty_fly_2", 0f, true),
-    EMPTY_FLY_3("empty_fly_3", 0f, true),
-    EMPTY_FLY_4("empty_fly_4", 0f, true),
-    EMPTY_PHANTOM_POTION("empty_phantom_potion", 0f, true),
-    EMPTY_CREEPER_POTION("empty_creeper_potion", 0f, true),
-    EMPTY_MINING_POTION("empty_mining_potion", 0f, true),
-    EMPTY_SWIMING_POTION("empty_swiming_potion", 0f, true);
+    CANDY_CANE("candy_cane", 0.001f, true);
 
     private final String name;
     private final ItemStack item;
@@ -197,40 +189,8 @@ public enum Items {
                 item = createRawBear();
                 break;
 
-            case "legendary_dirt":
-                item = createLegendaryDirt();
-                break;
-
-        case "empty_fly_1":
-            item = createEmptyFly1();
-            break;
-
-        case "empty_fly_2":
-            item = createEmptyFly2();
-            break;
-
-        case "empty_fly_3":
-            item = createEmptyFly3();
-            break;
-
-        case "empty_fly_4":
-            item = createEmptyFly4();
-            break;
-
-        case "empty_phantom_potion":
-            item = createEmptyPhantomPotion();
-            break;
-
-        case "empty_creeper_potion":
-            item = createEmptyCreeperPotion();
-            break;
-
-        case "empty_mining_potion":
-            item = createEmptyMiningPotion();
-            break;
-
-        case "empty_swiming_potion":
-            item = createEmptySwimingPotion();
+            case "candy_cane":
+                item = createCandyCane();
             break;
 
             default:
@@ -239,86 +199,6 @@ public enum Items {
         }
 
         this.item = item;
-    }
-
-    private ItemStack createEmptyFly1() {
-        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        itemMeta.setCustomModelData(1);
-
-        item.setItemMeta(itemMeta);
-        return item;
-    }
-
-    private ItemStack createEmptyFly2() {
-        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        itemMeta.setCustomModelData(2);
-
-        item.setItemMeta(itemMeta);
-        return item;
-    }
-
-    private ItemStack createEmptyFly3() {
-        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        itemMeta.setCustomModelData(3);
-
-        item.setItemMeta(itemMeta);
-        return item;
-    }
-
-    private ItemStack createEmptyFly4() {
-        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        itemMeta.setCustomModelData(4);
-
-        item.setItemMeta(itemMeta);
-        return item;
-    }
-
-    private ItemStack createEmptyPhantomPotion() {
-        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        itemMeta.setCustomModelData(5);
-
-        item.setItemMeta(itemMeta);
-        return item;
-    }
-
-    private ItemStack createEmptyCreeperPotion() {
-        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        itemMeta.setCustomModelData(6);
-
-        item.setItemMeta(itemMeta);
-        return item;
-    }
-
-    private ItemStack createEmptyMiningPotion() {
-        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        itemMeta.setCustomModelData(7);
-
-        item.setItemMeta(itemMeta);
-        return item;
-    }
-
-    private ItemStack createEmptySwimingPotion() {
-        ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
-        ItemMeta itemMeta = item.getItemMeta();
-
-        itemMeta.setCustomModelData(8);
-
-        item.setItemMeta(itemMeta);
-        return item;
     }
 
     private ItemStack createMendingBook() {
@@ -361,12 +241,13 @@ public enum Items {
         return item;
     }
 
-    private ItemStack createLegendaryDirt() {
-        ItemStack item = new ItemStack(Material.DIRT);
+    private ItemStack createCandyCane() {
+        ItemStack item = new ItemStack(Material.BAMBOO);
         ItemMeta itemMeta = item.getItemMeta();
 
-        itemMeta.setDisplayName("§cTerre du Cocu");
-		itemMeta.setLore(Arrays.asList("§eD'après les dires c'est", "§el'objet le plus rare de", "§etout le jeu"));
+        itemMeta.setDisplayName("§cS§fu§cc§fr§ce §fd§c'§fO§cr§fg§ce");
+		itemMeta.setLore(Arrays.asList("§eNoël 2019"));
+        itemMeta.setCustomModelData(1);
 
         item.setItemMeta(itemMeta);
 
@@ -467,7 +348,7 @@ public enum Items {
     }
 
     private ItemStack createIndianSpear() {
-        ItemStack item = new ItemStack(Material.STONE_SWORD);
+        ItemStack item = new ItemStack(Material.TRIDENT);
         ItemMeta itemMeta = item.getItemMeta();
 
         itemMeta.addAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("b3fb96db-e490-4233-b618-292f965c974c"), "generic.attackDamage", 4, Operation.ADD_NUMBER, EquipmentSlot.HAND));
@@ -521,10 +402,10 @@ public enum Items {
         ItemStack item = new ItemStack(Material.POTION);
         PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
 
-        itemMeta.setColor(Color.fromRGB(186, 34, 7));
+        itemMeta.setColor(Color.fromRGB(254, 194, 0));
         itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-        itemMeta.setDisplayName("§bFiole de Sang de Nain");
-        itemMeta.setLore(Arrays.asList("§eBoire cette fiole vous", "§epermettra de miner", "§eaussi vite qu'un nain"));
+        itemMeta.setDisplayName("§bBreuvage Nain");
+        itemMeta.setLore(Arrays.asList("§eBoire ce breuvage vous", "§epermettra de miner", "§eaussi vite qu'un nain", "§eau détriment de votre", "§edéfense"));
         itemMeta.setCustomModelData(7);
 
         item.setItemMeta(itemMeta);
@@ -566,7 +447,7 @@ public enum Items {
         ItemStack item = new ItemStack(Material.POTION);
         PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
 
-        itemMeta.setColor(Color.fromRGB(255, 243, 122));
+        itemMeta.setColor(Color.fromRGB(0, 255, 255));
         itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         itemMeta.setDisplayName("§bPotion de Vol 2min30s");
         itemMeta.setLore(Arrays.asList("§eBoire cette potion", "§evous permet de voler", "§ependant §62min30s"));
@@ -581,7 +462,7 @@ public enum Items {
         ItemStack item = new ItemStack(Material.POTION);
         PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
 
-        itemMeta.setColor(Color.fromRGB(255, 243, 122));
+        itemMeta.setColor(Color.fromRGB(0, 255, 255));
         itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         itemMeta.setDisplayName("§bPotion de Vol 5min");
         itemMeta.setLore(Arrays.asList("§eBoire cette potion", "§evous permet de voler", "§ependant §65min"));
@@ -596,7 +477,7 @@ public enum Items {
         ItemStack item = new ItemStack(Material.POTION);
         PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
 
-        itemMeta.setColor(Color.fromRGB(255, 243, 122));
+        itemMeta.setColor(Color.fromRGB(0, 255, 255));
         itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         itemMeta.setDisplayName("§bPotion de Vol 10min");
         itemMeta.setLore(Arrays.asList("§eBoire cette potion", "§evous permet de voler", "§ependant §610min"));
@@ -611,7 +492,7 @@ public enum Items {
         ItemStack item = new ItemStack(Material.POTION);
         PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
 
-        itemMeta.setColor(Color.fromRGB(255, 243, 122));
+        itemMeta.setColor(Color.fromRGB(0, 255, 255));
         itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         itemMeta.setDisplayName("§bPotion de Vol 20min");
         itemMeta.setLore(Arrays.asList("§eBoire cette potion", "§evous permet de voler", "§ependant §620min"));
@@ -627,7 +508,7 @@ public enum Items {
     }
 
     public ItemStack getItem() {
-        return this.item;
+        return this.item.clone();
     }
 
     public Float getRewardChance() {
