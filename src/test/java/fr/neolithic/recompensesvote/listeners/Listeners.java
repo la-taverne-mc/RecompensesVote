@@ -285,11 +285,34 @@ public class Listeners implements Listener {
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		if (event.getAction().equals(InventoryAction.PLACE_ALL) || event.getAction().equals(InventoryAction.PLACE_ONE) || event.getAction().equals(InventoryAction.PLACE_SOME)) {
+		ItemStack item;
 			Set<Integer> slot = new HashSet<Integer>();
+
+		switch (event.getAction()) {
+			case PLACE_ALL:
+			case PLACE_ONE:
+			case PLACE_SOME:
+			case SWAP_WITH_CURSOR:
+				slot.add(event.getRawSlot());
+				item = event.getCursor();
+				break;
+
+			case HOTBAR_SWAP:
 			slot.add(event.getRawSlot());
-			event.setCancelled(blockItemModifications(event.getInventory().getType(), slot, event.getCursor()));
+				item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+				break;
+			
+			case MOVE_TO_OTHER_INVENTORY:
+				slot.add(1337);
+				item = event.getCurrentItem();
+				break;
+
+			default:
+				return;
 		}
+
+		
+		event.setCancelled(blockItemModifications(event.getInventory().getType(), slot, item));
 	}
 	
 	@EventHandler
@@ -300,24 +323,24 @@ public class Listeners implements Listener {
 	private boolean blockItemModifications(InventoryType invType, Set<Integer> slots, ItemStack item) {
 		switch (invType) {
 			case ANVIL:
-				if (slots.contains(0) || slots.contains(1) || slots.contains(2)) {
-					if (Items.contains(item)) {
+				if (slots.contains(0) || slots.contains(1) || slots.contains(2) || slots.contains(1337)) {
+					if (Items.blockedItemsContains(item)) {
 						return true;
 					}
 				}
 				break;
 
 			case BREWING:
-				if (slots.contains(0) || slots.contains(1) || slots.contains(2) || slots.contains(3) || slots.contains(4)) {
-					if (Items.contains(item)) {
+				if (slots.contains(0) || slots.contains(1) || slots.contains(2) || slots.contains(3) || slots.contains(4) || slots.contains(1337)) {
+					if (Items.blockedItemsContains(item)) {
 						return true;
 					}
 				}
 				break;
 
 			case ENCHANTING:
-				if (slots.contains(0) || slots.contains(1)) {
-					if (Items.contains(item)) {
+				if (slots.contains(0) || slots.contains(1) || slots.contains(1337)) {
+					if (Items.blockedItemsContains(item)) {
 						return true;
 					}
 				}

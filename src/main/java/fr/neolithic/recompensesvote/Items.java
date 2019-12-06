@@ -191,7 +191,7 @@ public enum Items {
 
             case "candy_cane":
                 item = createCandyCane();
-            break;
+                break;
 
             default:
                 item = new ItemStack(Material.AIR);
@@ -534,6 +534,24 @@ public enum Items {
     public static Boolean contains(String test) {
         for (Items item : Items.values()) {
             if (item.getName().equals(test)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static Boolean blockedItemsContains(ItemStack testItem) {
+        testItem = testItem.clone();
+
+        if (testItem.getItemMeta() instanceof Damageable) {
+            Damageable testItemMeta = (Damageable) testItem.getItemMeta();
+            testItemMeta.setDamage(0);
+            testItem.setItemMeta((ItemMeta) testItemMeta);
+        }
+
+        for (Items item : Items.values()) {
+            if (item.isCustom && item.getItem().isSimilar(testItem)) {
                 return true;
             }
         }
