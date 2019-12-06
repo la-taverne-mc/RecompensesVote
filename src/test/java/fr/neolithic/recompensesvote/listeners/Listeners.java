@@ -105,13 +105,11 @@ public class Listeners implements Listener {
 
 		else if (Items.MINING_POTION.compareTo(event.getItem())) {
 			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 12000, 2));
-			event.setItem(Items.EMPTY_MINING_POTION.getItem());
 		}
 
 		else if (Items.SWIMING_POTION.compareTo(event.getItem())) {
 			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER, 12000, 0));
 			event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 12000, 0));
-			event.setItem(Items.EMPTY_SWIMING_POTION.getItem());
 		}
 
 		else if (Items.PHANTOM_POTION.compareTo(event.getItem())) {
@@ -122,7 +120,6 @@ public class Listeners implements Listener {
 			}
 
 			new PhantomEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
-			event.setItem(Items.EMPTY_PHANTOM_POTION.getItem());
 		}
 
 		else if (Items.CREEPER_POTION.compareTo(event.getItem())) {
@@ -133,7 +130,6 @@ public class Listeners implements Listener {
 			}
 
 			new CreeperEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
-			event.setItem(Items.EMPTY_CREEPER_POTION.getItem());
 		}
 		
 		else if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
@@ -145,7 +141,6 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 150).runTaskTimer(plugin, 0, 20);
-				event.setItem(Items.EMPTY_FLY_1.getItem());
 			}
 			
 			else if (Items.FLY_2.compareTo(event.getItem())) {
@@ -156,7 +151,6 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 300).runTaskTimer(plugin, 0, 20);
-				event.setItem(Items.EMPTY_FLY_2.getItem());
 			}
 			
 			else if (Items.FLY_3.compareTo(event.getItem())) {
@@ -167,7 +161,6 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 600).runTaskTimer(plugin, 0, 20);
-				event.setItem(Items.EMPTY_FLY_3.getItem());
 			}
 			
 			else if (Items.FLY_4.compareTo(event.getItem())) {
@@ -178,8 +171,30 @@ public class Listeners implements Listener {
 				}
 				
 				new FlyEffect(event.getPlayer(), 1200).runTaskTimer(plugin, 0, 20);
-				event.setItem(Items.EMPTY_FLY_4.getItem());
 			}
+		}
+
+		if (event.getItem().getType() == Material.POTION && event.getItem().getItemMeta().hasCustomModelData()) {
+			ItemStack emptyBottle = new ItemStack(Material.GLASS_BOTTLE);
+			ItemMeta emptyBottleMeta = emptyBottle.getItemMeta();
+			emptyBottleMeta.setCustomModelData(event.getItem().getItemMeta().getCustomModelData());
+			emptyBottle.setItemMeta(emptyBottleMeta);
+
+			Player player = event.getPlayer();
+			Integer slot; 
+			if (player.getInventory().getItemInMainHand().equals(event.getItem())) {
+				slot = player.getInventory().getHeldItemSlot();
+			}
+			else {
+				slot = 40;
+			}
+
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					player.getInventory().setItem(slot, emptyBottle);
+			}
+			}.runTask(plugin);
 		}
 	}
 	
