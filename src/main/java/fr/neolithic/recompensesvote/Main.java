@@ -36,6 +36,8 @@ public class Main extends JavaPlugin {
 	public static List<UUID> wearingBoots = Lists.newArrayList();
 	public static List<Object> runningTasks = Lists.newArrayList();
 
+	public static HashMap<Player, Integer> fillingBottle = new HashMap<Player, Integer>();
+
 	private EntityHider entityHider;
 
 	private FileManager saveFile;
@@ -44,7 +46,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		registerRecipes();
-		
+
 		entityHider = new EntityHider(this, Policy.BLACKLIST);
 		
 		getServer().getPluginManager().registerEvents(new ArmorListener(this), this);
