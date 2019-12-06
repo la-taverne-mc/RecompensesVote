@@ -25,6 +25,9 @@ import fr.neolithic.recompensesvote.tasks.BootsTask;
 import fr.neolithic.recompensesvote.tasks.CreeperEffect;
 import fr.neolithic.recompensesvote.tasks.FlyEffect;
 import fr.neolithic.recompensesvote.tasks.PhantomEffect;
+import fr.neolithic.recompensesvote.util.EntityHider;
+import fr.neolithic.recompensesvote.util.EntityHider.Policy;
+import fr.neolithic.recompensesvote.util.FileManager;
 
 public class Main extends JavaPlugin {
 	public static HashMap<UUID, String> effect = new HashMap<UUID, String>();
@@ -33,6 +36,8 @@ public class Main extends JavaPlugin {
 	public static List<UUID> wearingBoots = Lists.newArrayList();
 	public static List<Object> runningTasks = Lists.newArrayList();
 
+	private EntityHider entityHider;
+
 	private FileManager saveFile;
 	private FileConfiguration saveContent;
 	
@@ -40,8 +45,10 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		registerRecipes();
 		
+		entityHider = new EntityHider(this, Policy.BLACKLIST);
+		
 		getServer().getPluginManager().registerEvents(new ArmorListener(this), this);
-		getServer().getPluginManager().registerEvents(new Listeners(this), this);
+		getServer().getPluginManager().registerEvents(new Listeners(this, entityHider), this);
 
 		Commands commandExecutor = new Commands();
 		getCommand("selectvotereward").setExecutor(commandExecutor);

@@ -1,4 +1,4 @@
-package fr.neolithic.recompensesvote;
+package fr.neolithic.recompensesvote.util;
 
 import java.io.File;
 import java.io.IOException;

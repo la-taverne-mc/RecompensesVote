@@ -13,6 +13,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Trident;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -20,7 +21,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -36,13 +37,30 @@ import fr.neolithic.recompensesvote.Main;
 import fr.neolithic.recompensesvote.tasks.BootsTask;
 import fr.neolithic.recompensesvote.tasks.CreeperEffect;
 import fr.neolithic.recompensesvote.tasks.FlyEffect;
+import fr.neolithic.recompensesvote.tasks.IndianSpearTask;
 import fr.neolithic.recompensesvote.tasks.PhantomEffect;
+import fr.neolithic.recompensesvote.util.EntityHider;
+import fr.neolithic.recompensesvote.util.nbtapi.NBTCompound;
+import fr.neolithic.recompensesvote.util.nbtapi.NBTEntity;
 
 public class Listeners implements Listener {
 	private final JavaPlugin plugin;
+	private EntityHider entityHider;
 	
-	public Listeners(JavaPlugin plugin) {
+	public Listeners(JavaPlugin plugin, EntityHider entityHider) {
 		this.plugin = plugin;
+		this.entityHider = entityHider;
+	}
+	
+	@EventHandler
+	public void onProjectileLaunch(ProjectileLaunchEvent event) {
+		if (event.getEntity() instanceof Trident && event.getEntity().getShooter() instanceof Player) {
+			Trident trident = (Trident) event.getEntity();
+			NBTCompound tridentTags = new NBTEntity(trident).getCompound("Trident").getCompound("tag");
+			if (tridentTags.getInteger("CustomModelData") == 1) {
+				new IndianSpearTask(entityHider, (Player) trident.getShooter(), trident, tridentTags.getInteger("Damage")).runTaskLater(plugin, 3);
+			}
+		}
 	}
 	
 	@EventHandler
