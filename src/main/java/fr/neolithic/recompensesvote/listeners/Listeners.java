@@ -13,7 +13,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Levelled;
-import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Trident;
@@ -26,6 +26,7 @@ import org.bukkit.event.block.CauldronLevelChangeEvent.ChangeReason;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -188,12 +189,26 @@ public class Listeners implements Listener {
 			}
 		}
 	}
+
+	@EventHandler
+	public void onProjectileHit(ProjectileHitEvent event) {
+		if (event.getEntity() instanceof Trident && event.getHitEntity() instanceof Ageable) {
+			Trident trident = (Trident) event.getEntity();
+			Ageable target = (Ageable) event.getHitEntity();
+			NBTCompound tridentTags = new NBTEntity(trident).getCompound("Trident").getCompound("tag");
+			if (tridentTags.getInteger("CustomModelData") == 1) {
+				if ((target.getType().equals(EntityType.DONKEY) || target.getType().equals(EntityType.HORSE) || target.getType().equals(EntityType.MULE)) && target.getHealth() - trident.getDamage() <= 0 && !target.isAdult()) {
+					target.getWorld().dropItemNaturally(target.getLocation(), Items.RAW_HORSE.getItem());
+				}
+			}
+		}
+	}
 	
 	@EventHandler
 	public void onPlayerHit(EntityDamageByEntityEvent event) {
-		if (event.getDamager() instanceof Player && event.getEntity() instanceof Damageable) {
+		if (event.getDamager() instanceof Player && event.getEntity() instanceof Ageable) {
 			Player damager = (Player) event.getDamager();
-			Damageable target = (Damageable) event.getEntity();
+			Ageable target = (Ageable) event.getEntity();
 			
 			if (event.getCause().equals(DamageCause.ENTITY_ATTACK) || event.getCause().equals(DamageCause.ENTITY_SWEEP_ATTACK)) {
 				if (Items.BASEBALL_BAT.compareTo(damager.getInventory().getItemInMainHand())) {
@@ -201,13 +216,13 @@ public class Listeners implements Listener {
 				}
 				
 				else if (Items.ULU.compareTo(damager.getInventory().getItemInMainHand())) {
-					if (event.getEntityType().equals(EntityType.POLAR_BEAR) && (target.getHealth() - event.getDamage() <= 0)) {
+					if (event.getEntityType().equals(EntityType.POLAR_BEAR) && target.getHealth() - event.getDamage() <= 0 && !target.isAdult()) {
 						target.getWorld().dropItemNaturally(target.getLocation(), Items.RAW_BEAR.getItem());
 					}
 				}
 				
 				else if (Items.INDIAN_SPEAR.compareTo(damager.getInventory().getItemInMainHand())) {
-					if ((event.getEntityType().equals(EntityType.DONKEY) || event.getEntityType().equals(EntityType.HORSE) || event.getEntityType().equals(EntityType.MULE)) && target.getHealth() - event.getDamage() <= 0) {
+					if ((event.getEntityType().equals(EntityType.DONKEY) || event.getEntityType().equals(EntityType.HORSE) || event.getEntityType().equals(EntityType.MULE)) && target.getHealth() - event.getDamage() <= 0 && !target.isAdult()) {
 						target.getWorld().dropItemNaturally(target.getLocation(), Items.RAW_HORSE.getItem());
 					}
 				}
