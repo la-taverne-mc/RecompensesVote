@@ -3,6 +3,7 @@ package fr.neolithic.recompensesvote;
 import java.util.Arrays;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 
 public enum Items {
@@ -522,6 +524,12 @@ public enum Items {
     public Boolean compareTo(ItemStack item) {
         item = item.clone();
 
+        if (item.getItemMeta() instanceof LeatherArmorMeta) {
+            LeatherArmorMeta itemMeta = (LeatherArmorMeta) item.getItemMeta();
+            itemMeta.setColor(Bukkit.getItemFactory().getDefaultLeatherColor());
+            item.setItemMeta(itemMeta);
+        }
+
         if (item.getItemMeta() instanceof Damageable) {
             Damageable itemMeta = (Damageable) item.getItemMeta();
             itemMeta.setDamage(0);
@@ -544,6 +552,12 @@ public enum Items {
     public static Boolean blockedItemsContains(ItemStack testItem) {
         testItem = testItem.clone();
 
+        if (testItem.getItemMeta() instanceof LeatherArmorMeta) {
+            LeatherArmorMeta itemMeta = (LeatherArmorMeta) testItem.getItemMeta();
+            itemMeta.setColor(Bukkit.getItemFactory().getDefaultLeatherColor());
+            testItem.setItemMeta(itemMeta);
+        }
+
         if (testItem.getItemMeta() instanceof Damageable) {
             Damageable testItemMeta = (Damageable) testItem.getItemMeta();
             testItemMeta.setDamage(0);
@@ -561,6 +575,12 @@ public enum Items {
 
     public static Boolean contains(ItemStack testItem) {
         testItem = testItem.clone();
+
+        if (testItem.getItemMeta() instanceof LeatherArmorMeta) {
+            LeatherArmorMeta itemMeta = (LeatherArmorMeta) testItem.getItemMeta();
+            itemMeta.setColor(Bukkit.getItemFactory().getDefaultLeatherColor());
+            testItem.setItemMeta(itemMeta);
+        }
 
         if (testItem.getItemMeta() instanceof Damageable) {
             Damageable testItemMeta = (Damageable) testItem.getItemMeta();
