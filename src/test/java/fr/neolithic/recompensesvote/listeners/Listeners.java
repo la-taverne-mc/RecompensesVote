@@ -191,7 +191,7 @@ public class Listeners implements Listener {
 	
 	@EventHandler
 	public void onPlayerHit(EntityDamageByEntityEvent event) {
-		if (event.getDamager() instanceof Player) {
+		if (event.getDamager() instanceof Player && event.getEntity() instanceof Damageable) {
 			Player damager = (Player) event.getDamager();
 			Damageable target = (Damageable) event.getEntity();
 			
