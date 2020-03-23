@@ -3,7 +3,7 @@ api-version: "1.14"
 name: RecompensesVote
 version: "1.0"
 author: PoC4
-main: fr.neolithic.recompensesvote.Main
+main: me.lataverne.recompensesvote.Main
 commands:
   selectvotereward:
     description: select vote reward
