@@ -37,7 +37,7 @@ public enum Items {
     FIREWORK_ROCKET("firework_rocket", 0.15f, false),
     SILK_TOUCH_BOOK("silk_touch_book", 0.09f, false),
     FORTUNE_BOOK("fortune_book", 0.07f, false),
-    MENDING_BOOK("mending_book", 0.04f, true),
+    MENDING_BOOK("mending_book", 0.04f, false),
     FLY_1("fly_1", 0.18f, true),
     FLY_2("fly_2", 0.13f, true),
     FLY_3("fly_3", 0.1f, true),
