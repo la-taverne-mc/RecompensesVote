@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantInventory;
 import org.bukkit.plugin.Plugin;
 
 import me.lataverne.recompensesvote.Items;
@@ -19,6 +20,9 @@ import me.lataverne.recompensesvote.Main;
 import me.lataverne.recompensesvote.tasks.BootsTask;
 import me.lataverne.recompensesvote.tasks.FlyEffect;
 import me.lataverne.recompensesvote.tasks.PhantomEffect;
+
+import static org.bukkit.event.inventory.InventoryType.CHEST;
+import static org.bukkit.event.inventory.InventoryType.MERCHANT;
 
 public class MiscellaneousListeners implements Listener {
 	private final Plugin plugin;
@@ -55,6 +59,10 @@ public class MiscellaneousListeners implements Listener {
 	
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
+	//test if not shopkeeper
+		if(event.getInventory().getType() == CHEST){
+			return;
+		}
 		ItemStack item;
 		Set<Integer> slot = new HashSet<Integer>();
 
@@ -65,27 +73,34 @@ public class MiscellaneousListeners implements Listener {
 			case SWAP_WITH_CURSOR:
 				slot.add(event.getRawSlot());
 				item = event.getCursor();
+				event.setCancelled(blockItemModifications(event.getInventory().getType(), slot, item));
 				break;
 
 			case HOTBAR_SWAP:
 				slot.add(event.getRawSlot());
 				item = event.getWhoClicked().getInventory().getItem(event.getHotbarButton());
+				event.setCancelled(blockItemModifications(event.getInventory().getType(), slot, item));
 				break;
-			
+
 			case MOVE_TO_OTHER_INVENTORY:
 				slot.add(1337);
 				item = event.getCurrentItem();
+				event.setCancelled(blockItemModifications(event.getInventory().getType(), slot, item));
 				break;
 
 			default:
 				return;
 		}
-		
-		event.setCancelled(blockItemModifications(event.getInventory().getType(), slot, item));
+
+
 	}
 	
 	@EventHandler
 	public void onInventoryDrag(InventoryDragEvent event) {
+		//test if not shopkeeper
+		if(event.getInventory().getType() == CHEST){
+			return;
+		}
 		event.setCancelled(blockItemModifications(event.getInventory().getType(), event.getRawSlots(), event.getOldCursor()));
 	}
 	

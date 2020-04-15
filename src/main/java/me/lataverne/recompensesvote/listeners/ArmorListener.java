@@ -16,6 +16,9 @@ import org.bukkit.plugin.Plugin;
 import me.lataverne.recompensesvote.Items;
 import me.lataverne.recompensesvote.tasks.BootsTask;
 
+import static org.bukkit.event.inventory.InventoryType.CHEST;
+import static org.bukkit.event.inventory.InventoryType.MERCHANT;
+
 public class ArmorListener implements Listener {
 	private Plugin plugin;
 	
@@ -25,6 +28,10 @@ public class ArmorListener implements Listener {
 	
 	@EventHandler
 	public void inventoryClick(InventoryClickEvent event) {
+		//test if not shopkeeper
+		if(event.getInventory().getType() == CHEST){
+			return;
+		}
 		if (event.getInventory().getType().equals(InventoryType.CRAFTING)) {
 			if ((event.getSlotType().equals(SlotType.ARMOR) && event.getSlot() == 36 && !event.isShiftClick() && !event.getClick().equals(ClickType.NUMBER_KEY))) {
 				if (event.getCursor() == null) return;
